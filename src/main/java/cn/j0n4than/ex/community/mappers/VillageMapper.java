@@ -12,6 +12,6 @@ public interface VillageMapper {
     int deleteByIds(@Param("ids") List<Object> ids);
 
     int insertBatch(@Param("records") List<Village> records);
-    
+
     int updateOne(Village village);
 }

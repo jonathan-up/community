@@ -6,11 +6,11 @@
 
     <insert id="insertBatch">
         INSERT INTO `con_village` (`code`, `name`, `property`, `address`, `total_buildings`, `total_households`,
-        `created`)
+        `image`,`created`)
         VALUES
         <foreach collection="records" item="record" index="index" open="" close="" separator=",">
             (#{record.code}, #{record.name}, #{record.property}, #{record.address}, #{record.totalBuildings},
-            #{record.totalHouseholds}, #{record.created})
+            #{record.totalHouseholds}, #{record.image}, #{record.created})
         </foreach>
     </insert>
 
@@ -21,7 +21,8 @@
             `property`         = #{property},
             `address`          = #{address},
             `total_buildings`  = #{totalBuildings},
-            `total_households` = #{totalHouseholds}
+            `total_households` = #{totalHouseholds},
+            `image`            = #{image}
         WHERE id = #{id}
     </update>
 

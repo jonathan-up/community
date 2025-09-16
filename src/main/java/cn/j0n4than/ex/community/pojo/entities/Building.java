@@ -8,8 +8,4 @@ public class Building {
     private String name;
     private String period;
     private boolean lift;
-
-    // other table
-    private String villageName;
-    private String property;
 }

@@ -1,7 +1,7 @@
 package cn.j0n4than.ex.community;
 
-import cn.j0n4than.ex.community.mappers.UserMapper;
-import cn.j0n4than.ex.community.pojo.entities.User;
+import cn.j0n4than.ex.community.mappers.BuildingMapper;
+import cn.j0n4than.ex.community.pojo.vo.BuildingVo;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
+import java.util.List;
 
 public class MyBatisTests {
 
@@ -21,10 +22,10 @@ public class MyBatisTests {
 
         SqlSession sqlSession = sessionFactory.openSession();
 
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        BuildingMapper buildingMapper = sqlSession.getMapper(BuildingMapper.class);
 
-        User user = userMapper.selectByUsername("H0meV");
-        System.out.println("user = " + user);
+        List<BuildingVo> buildingVos = buildingMapper.selectByName(null);
+        System.out.println("buildingVos = " + buildingVos);
 
         sqlSession.close();
     }

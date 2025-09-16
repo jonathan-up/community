@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 // 小区
@@ -40,6 +41,7 @@ public class VillageHandler {
     public static void save(HttpServletRequestEx request, HttpServletResponseEx response) {
 
         Village bind = request.bind(Village.class);
+        bind.setCreated(new Date());
         if (bind.getId() == null) {
             // create
             ArrayList<Village> villages = new ArrayList<>();

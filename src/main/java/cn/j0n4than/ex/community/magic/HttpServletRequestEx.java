@@ -62,7 +62,7 @@ public class HttpServletRequestEx extends HttpServletRequestWrapper {
     }
 
     public Integer getParameterInt(String key) {
-        return WebUtils.parseInt(key, null);
+        return this.getParameterInt(key, null);
     }
     public Integer getParameterInt(String key, Integer _default) {
         String parameter = this.getParameter(key);

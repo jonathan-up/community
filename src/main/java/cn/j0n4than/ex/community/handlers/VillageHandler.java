@@ -1,0 +1,89 @@
+package cn.j0n4than.ex.community.handlers;
+
+import cn.idev.excel.FastExcel;
+import cn.idev.excel.context.AnalysisContext;
+import cn.idev.excel.read.listener.ReadListener;
+import cn.j0n4than.ex.community.magic.HttpServletRequestEx;
+import cn.j0n4than.ex.community.magic.HttpServletResponseEx;
+import cn.j0n4than.ex.community.pojo.Page;
+import cn.j0n4than.ex.community.pojo.ResponseEntity;
+import cn.j0n4than.ex.community.pojo.entities.Village;
+import cn.j0n4than.ex.community.pojo.requests.DeleteRequest;
+import cn.j0n4than.ex.community.services.UploadService;
+import cn.j0n4than.ex.community.services.VillageService;
+import cn.j0n4than.ex.community.services.impl.FilesystemUploadServiceImpl;
+import cn.j0n4than.ex.community.services.impl.VillageServiceImpl;
+
+import javax.servlet.ServletException;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+// 小区
+public class VillageHandler {
+
+    private final static VillageService villageService = new VillageServiceImpl();
+    private final static UploadService uploaderService = new FilesystemUploadServiceImpl();
+
+    public static void page(HttpServletRequestEx request, HttpServletResponseEx response) {
+        Integer current = request.getParameterInt("page", 1);
+        Integer size = request.getParameterInt("size", 10);
+        String name = request.getParameter("name");
+
+        Page<Village> page = villageService.findPage(name, current, size);
+        response.json(200, new ResponseEntity<>("OK", page));
+    }
+
+    public static void save(HttpServletRequestEx request, HttpServletResponseEx response) {
+
+    }
+
+    public static void del(HttpServletRequestEx request, HttpServletResponseEx response) {
+        DeleteRequest deleteRequest = request.bind(DeleteRequest.class);
+        ArrayList<Object> ids = deleteRequest.getIds();
+
+        int count = villageService.del(ids);
+        response.json(200, new ResponseEntity<>(String.format("成功删除%d条记录", count), ids));
+    }
+
+    public static void upload(HttpServletRequestEx request, HttpServletResponseEx response) throws ServletException, IOException {
+        String newFilename = uploaderService.upload(
+                request.getPart("image"),
+                new String[]{"jpg", "jpeg", "png"}
+        );
+
+        response.json(200, new ResponseEntity<>("OK", newFilename));
+    }
+
+    public static void _import(HttpServletRequestEx request, HttpServletResponseEx response) throws ServletException, IOException {
+
+        String newFilename = uploaderService.upload(request.getPart("excel"), new String[]{"xlsx"});
+        File excel = new File(request.getServletContext().getRealPath("upload") + File.separator + newFilename);
+
+        // parse excel
+        try {
+            List<Village> records = FastExcel.read(excel, Village.class, new ReadListener<Village>() {
+                @Override
+                public void invoke(Village village, AnalysisContext analysisContext) {
+                }
+
+                @Override
+                public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+                }
+            }).doReadAllSync();
+
+            int insert = villageService.insert(records);
+
+            response.json(200, new ResponseEntity<>(String.format("解析到%d条记录, 成功插入%d条记录", records.size(), insert)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.json(500, new ResponseEntity<>("解析Excel失败，格式或模板不正确"));
+        } finally {
+            // delete it anyway
+            if (excel.exists()) {
+                excel.delete();
+            }
+        }
+    }
+}

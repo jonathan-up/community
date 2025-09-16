@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.j0n4than.ex.community.mappers.VillageMapper">
+    <insert id="insertBatch">
+        INSERT INTO `con_village` (`code`, `name`, `property`, `address`, `total_buildings`, `total_households`,
+        `created`)
+        VALUES
+        <foreach collection="records" item="record" index="index" open="" close="" separator=",">
+            (#{record.code}, #{record.name}, #{record.property}, #{record.address}, #{record.totalBuildings},
+            #{record.totalHouseholds}, #{record.created})
+        </foreach>
+    </insert>
+
+    <select id="selectByName" resultType="cn.j0n4than.ex.community.pojo.entities.Village">
+        SELECT *
+        FROM `con_village`
+        <where>
+            <if test="name != null and name != ''">
+                AND `name` LIKE '%${name}%'
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        DELETE
+        FROM `con_village`
+        WHERE `id` IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

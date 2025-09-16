@@ -152,7 +152,7 @@
         });
 
         form.on('submit(village-update)', function (data) {
-            
+
             data.field.id = id;
             requestWithToken('/api/village', 'put', true, data.field, response => {
                 layer.msg(response.message, {icon: 1, time: 1000}, function () {

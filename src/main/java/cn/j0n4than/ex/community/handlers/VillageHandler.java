@@ -26,6 +26,7 @@ public class VillageHandler {
     private final static VillageService villageService = new VillageServiceImpl();
     private final static UploadService uploaderService = new FilesystemUploadServiceImpl();
 
+    // page list
     public static void page(HttpServletRequestEx request, HttpServletResponseEx response) {
         Integer current = request.getParameterInt("page", 1);
         Integer size = request.getParameterInt("size", 10);
@@ -35,10 +36,32 @@ public class VillageHandler {
         response.json(200, new ResponseEntity<>("OK", page));
     }
 
+    // create or update
     public static void save(HttpServletRequestEx request, HttpServletResponseEx response) {
 
+        Village bind = request.bind(Village.class);
+        if (bind.getId() == null) {
+            // create
+            ArrayList<Village> villages = new ArrayList<>();
+            villages.add(bind);
+            if (villageService.insert(villages) > 0) {
+                response.json(200, new ResponseEntity<>("添加成功"));
+                return;
+            }
+
+            response.json(500, new ResponseEntity<>("添加失败"));
+            return;
+        }
+
+        // update
+        if (villageService.update(bind) > 0) {
+            response.json(200, new ResponseEntity<>("更新成功"));
+            return;
+        }
+        response.json(500, new ResponseEntity<>("更新失败"));
     }
 
+    // delete
     public static void del(HttpServletRequestEx request, HttpServletResponseEx response) {
         DeleteRequest deleteRequest = request.bind(DeleteRequest.class);
         ArrayList<Object> ids = deleteRequest.getIds();
@@ -47,16 +70,20 @@ public class VillageHandler {
         response.json(200, new ResponseEntity<>(String.format("成功删除%d条记录", count), ids));
     }
 
-    public static void upload(HttpServletRequestEx request, HttpServletResponseEx response) throws ServletException, IOException {
+    // image upload
+    public static void upload(HttpServletRequestEx request, HttpServletResponseEx response) throws
+            ServletException, IOException {
         String newFilename = uploaderService.upload(
                 request.getPart("image"),
                 new String[]{"jpg", "jpeg", "png"}
         );
 
-        response.json(200, new ResponseEntity<>("OK", newFilename));
+        response.json(200, new ResponseEntity<>("上传成功", "/upload/" + newFilename));
     }
 
-    public static void _import(HttpServletRequestEx request, HttpServletResponseEx response) throws ServletException, IOException {
+    // excel import
+    public static void _import(HttpServletRequestEx request, HttpServletResponseEx response) throws
+            ServletException, IOException {
 
         String newFilename = uploaderService.upload(request.getPart("excel"), new String[]{"xlsx"});
         File excel = new File(request.getServletContext().getRealPath("upload") + File.separator + newFilename);

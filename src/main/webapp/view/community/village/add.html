@@ -102,7 +102,7 @@
 
 
         //普通图片上传
-        var uploadInst = upload.render({
+        upload.render({
             elem: '#test1'
             , url: '/api/village/upload' //改成您自己的上传接口
             , "field": "image" //修改前端提交的filed字段
@@ -116,43 +116,24 @@
                 });
             }
             , done: function (res) {
-                //如果上传失败
-                if (res.code > 0) {
-                    return layer.msg('上传失败');
-                }
-                alert(res.data);
+
+                layer.msg(res.message)
+
                 //上传成功
-                $(".layui-form").append("<input  class='image' type='hidden' name='image' value='" + res.data + "'>");
+                $(".layui-form").append("<input  class='image' type='hidden' name='image' value='" + res.result + "'>");
             }
         });
 
 
         form.on('submit(village-save)', function (data) {
 
-            //获取隐藏域中的图片
-            // data.field.image=$(".image")[0].value;
-
-            console.info(data.field)
-
-            $.ajax({
-                url: '/api/village',
-                data: data.field,
-                type: 'post',
-                beforeSend: function (xhr) { //可以设置自定义标头
-                    // 将token塞进Header里
-                    xhr.setRequestHeader('token', localStorage.getItem("token"));
-
-                },
-                success: function (result) {
-                    if (result.code == 0) {
-                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
-                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                            window.parent.location.reload()
-                        });
-                    } else {
-                        layer.msg(result.msg, {icon: 2, time: 1000});
-                    }
-                }
+            requestWithToken('/api/village', 'put', true, data.field, response => {
+                layer.msg(response.message, {icon: 1, time: 1000}, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    window.parent.location.reload()
+                });
+            }, err => {
+                layer.msg(err.responseJSON.message, {icon: 2, time: 1000});
             })
             return false;
         });

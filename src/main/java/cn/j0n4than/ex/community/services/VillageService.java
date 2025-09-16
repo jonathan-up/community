@@ -9,6 +9,8 @@ public interface VillageService {
 
     Page<Village> findPage(String username, int page, int size);
 
+    Village findOne(long id);
+
     int del(List<Object> ids);
 
     int insert(List<Village> records);

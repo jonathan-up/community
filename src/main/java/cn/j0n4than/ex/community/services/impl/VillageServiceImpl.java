@@ -28,6 +28,16 @@ public class VillageServiceImpl implements VillageService {
     }
 
     @Override
+    public Village findOne(long id) {
+        try (
+                SqlSession sqlSession = MybatisUtils.sqlSessionFactory.openSession()
+        ) {
+            VillageMapper villageMapper = sqlSession.getMapper(VillageMapper.class);
+            return villageMapper.selectById(id);
+        }
+    }
+
+    @Override
     public int del(List<Object> ids) {
         try (
                 SqlSession sqlSession = MybatisUtils.sqlSessionFactory.openSession()

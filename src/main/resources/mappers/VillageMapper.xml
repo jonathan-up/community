@@ -22,6 +22,9 @@
             </if>
         </where>
     </select>
+    <select id="selectById" resultType="cn.j0n4than.ex.community.pojo.entities.Village">
+        SELECT * FROM `con_village` WHERE `id` = #{id} LIMIT 1
+    </select>
 
     <delete id="deleteByIds">
         DELETE

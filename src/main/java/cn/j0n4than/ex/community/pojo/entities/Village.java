@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 public class Village {
     @ExcelProperty(index = 0)
-    private long id;
+    private Long id;
 
     @ExcelProperty(index = 1)
     private String code;
@@ -28,6 +28,9 @@ public class Village {
 
     @ExcelProperty(index = 5)
     private int totalHouseholds;
+
+    @ExcelProperty(index = 6)
+    private String image;
 
     @ExcelIgnore
     private String phone;

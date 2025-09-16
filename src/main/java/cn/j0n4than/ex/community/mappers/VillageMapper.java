@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface VillageMapper {
     List<Village> selectByName(String name);
+
     Village selectById(Long id);
 
     int deleteByIds(@Param("ids") List<Object> ids);

@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.j0n4than.ex.community.mappers.VillageMapper">
+
     <insert id="insertBatch">
         INSERT INTO `con_village` (`code`, `name`, `property`, `address`, `total_buildings`, `total_households`,
         `created`)
@@ -12,6 +13,17 @@
             #{record.totalHouseholds}, #{record.created})
         </foreach>
     </insert>
+
+    <update id="updateOne">
+        UPDATE `con_village`
+        SET `code`             = #{code},
+            `name`             = #{name},
+            `property`         = #{property},
+            `address`          = #{address},
+            `total_buildings`  = #{totalBuildings},
+            `total_households` = #{totalHouseholds}
+        WHERE id = #{id}
+    </update>
 
     <select id="selectByName" resultType="cn.j0n4than.ex.community.pojo.entities.Village">
         SELECT *
@@ -23,7 +35,10 @@
         </where>
     </select>
     <select id="selectById" resultType="cn.j0n4than.ex.community.pojo.entities.Village">
-        SELECT * FROM `con_village` WHERE `id` = #{id} LIMIT 1
+        SELECT *
+        FROM `con_village`
+        WHERE `id` = #{id}
+        LIMIT 1
     </select>
 
     <delete id="deleteByIds">

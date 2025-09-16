@@ -8,4 +8,5 @@ public class Building {
     private String name;
     private String period;
     private boolean lift;
+    private Integer villageId;
 }

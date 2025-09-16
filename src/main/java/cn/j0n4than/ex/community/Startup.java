@@ -22,5 +22,7 @@ public class Startup {
         // 楼栋
         Router.register("/building", HttpMethod.GET, BuildingHandler::page);
         Router.register("/building", HttpMethod.DELETE, BuildingHandler::del);
+        Router.register("/building", HttpMethod.PUT, BuildingHandler::save);
+        Router.register("/building/one", HttpMethod.GET, BuildingHandler::one);
     }
 }

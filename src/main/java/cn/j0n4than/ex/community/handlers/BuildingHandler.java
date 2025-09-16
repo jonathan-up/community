@@ -1,15 +1,15 @@
 package cn.j0n4than.ex.community.handlers;
 
+import cn.j0n4than.ex.community.exceptions.HandlerException;
 import cn.j0n4than.ex.community.magic.HttpServletRequestEx;
 import cn.j0n4than.ex.community.magic.HttpServletResponseEx;
 import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.ResponseEntity;
+import cn.j0n4than.ex.community.pojo.entities.Building;
 import cn.j0n4than.ex.community.pojo.requests.DeleteRequest;
 import cn.j0n4than.ex.community.pojo.vo.BuildingVo;
 import cn.j0n4than.ex.community.services.BuildingService;
-import cn.j0n4than.ex.community.services.UploadService;
 import cn.j0n4than.ex.community.services.impl.BuildingServiceImpl;
-import cn.j0n4than.ex.community.services.impl.FilesystemUploadServiceImpl;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class BuildingHandler {
 
     private final static BuildingService buildingService = new BuildingServiceImpl();
-    private final static UploadService uploaderService = new FilesystemUploadServiceImpl();
 
     // page list
     public static void page(HttpServletRequestEx request, HttpServletResponseEx response) {
@@ -30,45 +29,44 @@ public class BuildingHandler {
     }
 
     // get one
-//    public static void one(HttpServletRequestEx request, HttpServletResponseEx response) {
-//        Integer id = request.getParameterInt("id");
-//        if (id == null) {
-//            throw new HandlerException(400, "Invalid id", null);
-//        }
-//
-//        Village one = villageService.findOne(id);
-//        if (one == null) {
-//            throw new HandlerException(404, "Record not found", null);
-//        }
-//
-//        response.json(200, new ResponseEntity<>("OK", one));
-//    }
+    public static void one(HttpServletRequestEx request, HttpServletResponseEx response) {
+        Integer id = request.getParameterInt("id");
+        if (id == null) {
+            throw new HandlerException(400, "Invalid id", null);
+        }
+
+        Building one = buildingService.findOne(id);
+        if (one == null) {
+            throw new HandlerException(404, "Record not found", null);
+        }
+
+        response.json(200, new ResponseEntity<>("OK", one));
+    }
 
     // create or update
-//    public static void save(HttpServletRequestEx request, HttpServletResponseEx response) {
-//
-//        Village bind = request.bind(Village.class);
-//        bind.setCreated(new Date());
-//        if (bind.getId() == null) {
-//            // create
-//            ArrayList<Village> villages = new ArrayList<>();
-//            villages.add(bind);
-//            if (villageService.insert(villages) > 0) {
-//                response.json(200, new ResponseEntity<>("添加成功"));
-//                return;
-//            }
-//
-//            response.json(500, new ResponseEntity<>("添加失败"));
-//            return;
-//        }
-//
-//        // update
-//        if (villageService.update(bind) > 0) {
-//            response.json(200, new ResponseEntity<>("更新成功"));
-//            return;
-//        }
-//        response.json(500, new ResponseEntity<>("更新失败"));
-//    }
+    public static void save(HttpServletRequestEx request, HttpServletResponseEx response) {
+
+        Building bind = request.bind(Building.class);
+        if (bind.getId() == null) {
+            // create
+            ArrayList<Building> buildings = new ArrayList<>();
+            buildings.add(bind);
+            if (buildingService.insert(buildings) > 0) {
+                response.json(200, new ResponseEntity<>("添加成功"));
+                return;
+            }
+
+            response.json(500, new ResponseEntity<>("添加失败"));
+            return;
+        }
+
+        // update
+        if (buildingService.update(bind) > 0) {
+            response.json(200, new ResponseEntity<>("更新成功"));
+            return;
+        }
+        response.json(500, new ResponseEntity<>("更新失败"));
+    }
 
     // delete
     public static void del(HttpServletRequestEx request, HttpServletResponseEx response) {

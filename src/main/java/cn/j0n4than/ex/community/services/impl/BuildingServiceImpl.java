@@ -2,6 +2,7 @@ package cn.j0n4than.ex.community.services.impl;
 
 import cn.j0n4than.ex.community.mappers.BuildingMapper;
 import cn.j0n4than.ex.community.pojo.Page;
+import cn.j0n4than.ex.community.pojo.entities.Building;
 import cn.j0n4than.ex.community.pojo.vo.BuildingVo;
 import cn.j0n4than.ex.community.services.BuildingService;
 import cn.j0n4than.ex.community.utils.MybatisUtils;
@@ -37,6 +38,40 @@ public class BuildingServiceImpl implements BuildingService {
             int count = buildingMapper.deleteByIds(ids);
             sqlSession.commit();
             return count;
+        }
+    }
+
+    @Override
+    public int insert(List<Building> records) {
+        try (
+                SqlSession sqlSession = MybatisUtils.sqlSessionFactory.openSession()
+        ) {
+            BuildingMapper buildingMapper = sqlSession.getMapper(BuildingMapper.class);
+            int count = buildingMapper.insertBatch(records);
+            sqlSession.commit();
+            return count;
+        }
+    }
+
+    @Override
+    public int update(Building building) {
+        try (
+                SqlSession sqlSession = MybatisUtils.sqlSessionFactory.openSession()
+        ) {
+            BuildingMapper buildingMapper = sqlSession.getMapper(BuildingMapper.class);
+            int count = buildingMapper.updateOne(building);
+            sqlSession.commit();
+            return count;
+        }
+    }
+
+    @Override
+    public Building findOne(Object id) {
+        try (
+                SqlSession sqlSession = MybatisUtils.sqlSessionFactory.openSession()
+        ) {
+            BuildingMapper buildingMapper = sqlSession.getMapper(BuildingMapper.class);
+            return buildingMapper.selectById(id);
         }
     }
 }

@@ -12,4 +12,6 @@ public interface VillageService {
     int del(List<Object> ids);
 
     int insert(List<Village> records);
+
+    int update(Village village);
 }

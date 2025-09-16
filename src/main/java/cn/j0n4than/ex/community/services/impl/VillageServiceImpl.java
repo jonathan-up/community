@@ -50,4 +50,16 @@ public class VillageServiceImpl implements VillageService {
             return count;
         }
     }
+
+    @Override
+    public int update(Village village) {
+        try (
+                SqlSession sqlSession = MybatisUtils.sqlSessionFactory.openSession()
+        ) {
+            VillageMapper villageMapper = sqlSession.getMapper(VillageMapper.class);
+            int count = villageMapper.updateOne(village);
+            sqlSession.commit();
+            return count;
+        }
+    }
 }

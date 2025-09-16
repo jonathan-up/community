@@ -124,7 +124,6 @@
             }
         });
 
-
         form.on('submit(village-save)', function (data) {
 
             requestWithToken('/api/village', 'put', true, data.field, response => {

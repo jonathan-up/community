@@ -31,7 +31,7 @@ public class AuthHandler {
 
         // SOME LOGON STUFF...
         // Generate a token?
-        user.setPassword(null);
+        user.setPwd(null);
         user.setSalt(null);
         String token = JwtUtils.crete(user, TimeUtils.HOUR * 10);
 

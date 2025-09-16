@@ -6,7 +6,7 @@
 
     <select id="selectByUsername" resultType="cn.j0n4than.ex.community.pojo.entities.User">
         SELECT *
-        FROM `con_users`
+        FROM `con_user`
         WHERE username = #{username}
         LIMIT 1;
     </select>

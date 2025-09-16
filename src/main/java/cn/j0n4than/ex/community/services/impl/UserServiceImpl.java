@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
                 return null;
             }
 
-            if (!Md5Utils.checkPassword(password, user.getPassword(), user.getSalt())) {
+            if (!Md5Utils.checkPassword(password, user.getPwd(), user.getSalt())) {
                 return null;
             }
 

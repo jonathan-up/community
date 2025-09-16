@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../component/pear/css/pear.css"/>
+</head>
+<body>
+<form class="layui-form" lay-filter="layItem" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">小区名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" lay-verify="name" autocomplete="off" placeholder="请输入标题"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">小区编号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="code" required lay-verify="required" placeholder="请输入价格"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">小区地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="address" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入卖点" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">总栋数</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="totalBuildings" required lay-verify="required"
+                                   placeholder="请输入库存" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">总户数</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="totalHouseholds" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入卖点" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">物业名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="property" required lay-verify="required" placeholder="请输入库存"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="test1">上传图片</button>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="demo1" style="width: 200px;height: 150px">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="village-update">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+<!--            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">-->
+<!--                <i class="layui-icon layui-icon-refresh"></i>-->
+<!--                重置-->
+<!--            </button>-->
+        </div>
+    </div>
+</form>
+<script src="../../../component/layui/layui.js"></script>
+<script src="../../../component/pear/pear.js"></script>
+<script src="../../js/base.js"></script>
+<script src="../../../admin/utils.js"></script>
+
+<script>
+    layui.use(['form', 'jquery', 'upload'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let upload = layui.upload;
+
+        //1.获取请求携带id
+        let id = getQueryVariable("id");
+        let image = "";
+
+        //2.向后端发起ajax请求，根据id查询小区的数据
+        requestWithToken(`/api/village/one?id=${id}`, 'get', false, null, response => {
+            let village = response.result;
+            console.info(village)
+
+            form.val("layItem", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                id: village.id,
+                code: village.code,
+                name: village.name,
+                address: village.address,
+                totalBuildings: village.totalBuildings,
+                totalHouseholds: village.totalHouseholds,
+                property: village.property
+            });
+            image = village.image;
+        }, err => {
+            console.log(err)
+            layer.msg(err.responseJSON.message, {icon: 2, time: 1000});
+        });
+
+        //回显图片
+        if (image) {
+            sessionStorage.setItem("image", image)
+            $('#demo1').attr("src", image)
+        }
+
+        //普通图片上传
+        upload.render({
+            elem: '#test1'
+            , url: '/api/village/upload' //改成您自己的上传接口
+            , "field": "image" //修改前端提交的filed字段
+            , headers: {
+                Authorization: localStorage.getItem("token")
+            },
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                layer.msg(res.message)
+                //上传成功
+                $(".layui-form").append("<input  class='image' type='hidden' name='image' value='" + res.result + "'>");
+            }
+        });
+
+        form.on('submit(village-update)', function (data) {
+
+            data.field.id = id;
+            requestWithToken('/api/village', 'put', true, data.field, response => {
+                layer.msg(response.message, {icon: 1, time: 1000}, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    window.parent.location.reload()
+                });
+            }, err => {
+                layer.msg(err.responseJSON.message, {icon: 2, time: 1000});
+            })
+            return false;
+        });
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

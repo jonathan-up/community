@@ -5,14 +5,16 @@
 		"type": 0,
 		"icon": "layui-icon layui-icon-console",
 		"href": "",
-		"children": [{
-			"id": 10,
-			"title": "首页",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/console/console1.html"
-		}]
+		"children": [
+			{
+				"id": 10,
+				"title": "首页",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/console/console1.html"
+			}
+		]
 	},
 	{
 		"id": "system",
@@ -20,14 +22,15 @@
 		"icon": "layui-icon layui-icon-set-fill",
 		"type": 0,
 		"href": "",
-		"children": [{
-			"id": 601,
-			"title": "用户管理",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/user/user.html"
-		},
+		"children": [
+			{
+				"id": 601,
+				"title": "用户管理",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/user/user.html"
+			},
 			{
 				"id": 602,
 				"title": "角色管理",
@@ -36,7 +39,6 @@
 				"openType": "_iframe",
 				"href": "view/role/role.html"
 			},
-
 			{
 				"id": 603,
 				"title": "权限管理",
@@ -53,7 +55,6 @@
 				"openType": "_iframe",
 				"href": "view/system/logging.html"
 			}
-
 		]
 	},
 	{
@@ -62,21 +63,31 @@
 		"icon": "layui-icon layui-icon-user",
 		"type": 0,
 		"href": "",
-		"children": [{
-			"id": 100,
-			"title": "小区管理",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/community/village.html"
-		},{
-			"id": 101,
-			"title": "房产管理",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/community/village.html"
-		}
+		"children": [
+			{
+				"id": 100,
+				"title": "小区管理",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/community/village.html"
+			},
+			{
+				"id": 101,
+				"title": "楼栋管理",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/community/building.html"
+			},
+			{
+				"id": 102,
+				"title": "房屋资料",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/community/village.html"
+			}
 		]
 	},
 	{
@@ -85,14 +96,15 @@
 		"icon": "layui-icon layui-icon-user",
 		"type": 0,
 		"href": "",
-		"children": [{
-			"id": 500,
-			"title": "雇员管理",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/emp/emp.html"
-		}
+		"children": [
+			{
+				"id": 500,
+				"title": "雇员管理",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/emp/emp.html"
+			}
 		]
 	},
 	{
@@ -101,14 +113,15 @@
 		"icon": "layui-icon layui-icon-rmb",
 		"type": 0,
 		"href": "",
-		"children": [{
-			"id": 200,
-			"title": "资产设备管理",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/money/money.html"
-		}
+		"children": [
+			{
+				"id": 200,
+				"title": "资产设备管理",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/money/money.html"
+			}
 		]
 	},
 	{
@@ -117,14 +130,15 @@
 		"icon": "layui-icon layui-icon-release",
 		"type": 0,
 		"href": "",
-		"children": [{
-			"id": 103,
-			"title": "车位管理",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/banner/banner.html"
-		},
+		"children": [
+			{
+				"id": 103,
+				"title": "车位管理",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/banner/banner.html"
+			},
 			{
 				"id": 105,
 				"title": "车位使用管理",
@@ -132,6 +146,7 @@
 				"type": 1,
 				"openType": "_iframe",
 				"href": "view/banner/banner.html"
-			}]
+			}
+		]
 	}
 ]

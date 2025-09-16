@@ -78,11 +78,15 @@
 <script src="../../admin/utils.js"></script>
 <script>
 
-    layui.use('upload', function () {
-        var upload = layui.upload;
+    layui.use(['table', 'form', 'jquery', 'upload'], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let $ = layui.jquery;
+        let upload = layui.upload;
 
-        //执行实例
-        var uploadInst = upload.render({
+        let MODULE_PATH = "./village/";
+
+        upload.render({
             elem: '#export', //绑定元素
             url: '/api/village/import', //上传接口
             field: "excel",
@@ -91,6 +95,7 @@
                 Authorization: localStorage.getItem("token")
             },
             done: function (res) {
+                table.reload('village_table');
                 layer.alert(res.message);
             },
             error: function (index, upload, res, xhr) {
@@ -99,13 +104,6 @@
                 console.log(upload)
             }
         });
-    });
-    layui.use(['table', 'form', 'jquery'], function () {
-        let table = layui.table;
-        let form = layui.form;
-        let $ = layui.jquery;
-
-        let MODULE_PATH = "./village/";
 
         let cols = [
             [

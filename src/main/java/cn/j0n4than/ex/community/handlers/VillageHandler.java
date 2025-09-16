@@ -3,6 +3,7 @@ package cn.j0n4than.ex.community.handlers;
 import cn.idev.excel.FastExcel;
 import cn.idev.excel.context.AnalysisContext;
 import cn.idev.excel.read.listener.ReadListener;
+import cn.j0n4than.ex.community.exceptions.HandlerException;
 import cn.j0n4than.ex.community.magic.HttpServletRequestEx;
 import cn.j0n4than.ex.community.magic.HttpServletResponseEx;
 import cn.j0n4than.ex.community.pojo.Page;
@@ -35,6 +36,21 @@ public class VillageHandler {
 
         Page<Village> page = villageService.findPage(name, current, size);
         response.json(200, new ResponseEntity<>("OK", page));
+    }
+
+    // get one
+    public static void one(HttpServletRequestEx request, HttpServletResponseEx response) {
+        Integer id = request.getParameterInt("id");
+        if (id == null) {
+            throw new HandlerException(400, "Invalid id", null);
+        }
+
+        Village one = villageService.findOne(id);
+        if (one == null) {
+            throw new HandlerException(404, "Record not found", null);
+        }
+
+        response.json(200, new ResponseEntity<>("OK", one));
     }
 
     // create or update

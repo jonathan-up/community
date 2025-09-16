@@ -11,6 +11,7 @@ public class Startup {
         Router.register("/profile", HttpMethod.GET, ProfileHandler::get);
 
         // 小区
+        Router.register("/village/one", HttpMethod.GET, VillageHandler::one);
         Router.register("/village", HttpMethod.GET, VillageHandler::page);
         Router.register("/village", HttpMethod.PUT, VillageHandler::save);
         Router.register("/village", HttpMethod.DELETE, VillageHandler::del);

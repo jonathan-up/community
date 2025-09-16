@@ -4,12 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.j0n4than.ex.community.mappers.BuildingMapper">
 
-    <resultMap id="buildingVo" type="cn.j0n4than.ex.community.pojo.vo.BuildingVo">
-        <id property="id" column="b.id"/>
-        <result property="name" column="b.name"/>
-        <result property="villageName" column="v.name"/>
-    </resultMap>
-
     <select id="selectByName" resultType="cn.j0n4than.ex.community.pojo.vo.BuildingVo">
         SELECT `b`.`id` as `id`, `b`.`name` as `name`, `period`, `lift`, `v`.`name` as villageName, `property`
         FROM `con_building` as `b`
@@ -20,4 +14,13 @@
             </if>
         </where>
     </select>
+
+    <delete id="deleteByIds">
+        DELETE
+        FROM `con_building`
+        WHERE `id` IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

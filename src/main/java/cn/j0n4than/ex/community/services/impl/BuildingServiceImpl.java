@@ -8,6 +8,8 @@ import cn.j0n4than.ex.community.utils.MybatisUtils;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.session.SqlSession;
 
+import java.util.List;
+
 public class BuildingServiceImpl implements BuildingService {
 
     @Override
@@ -23,6 +25,18 @@ public class BuildingServiceImpl implements BuildingService {
 
                 return buildingVoPage;
             }
+        }
+    }
+
+    @Override
+    public int del(List<Object> ids) {
+        try (
+                SqlSession sqlSession = MybatisUtils.sqlSessionFactory.openSession()
+        ) {
+            BuildingMapper buildingMapper = sqlSession.getMapper(BuildingMapper.class);
+            int count = buildingMapper.deleteByIds(ids);
+            sqlSession.commit();
+            return count;
         }
     }
 }

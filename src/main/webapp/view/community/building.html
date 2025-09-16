@@ -207,11 +207,11 @@
         }
 
         window.remove = function (obj) {
-            layer.confirm('确定要删除该小区', {icon: 3, title: '提示'}, function (index) {
+            layer.confirm('确定要删除该楼栋', {icon: 3, title: '提示'}, function (index) {
                 layer.close(index);
                 let loading = layer.load();
 
-                requestWithToken('/api/village', 'delete', true, {ids: [obj.data['id']]}, (response) => {
+                requestWithToken('/api/building', 'delete', true, {ids: [obj.data['id']]}, (response) => {
                     layer.msg(response.message, {icon: 1, time: 1000}, function () {
                         obj.del();//前端的假删除
                     });
@@ -237,12 +237,10 @@
             //去除最后一个逗号
             ids = ids.substr(0, ids.length - 1);
 
-            console.info(ids.split(','))
-
-            layer.confirm('确定要删除这些小区', {icon: 3, title: '提示'}, function (index) {
+            layer.confirm('确定要删除这些楼栋', {icon: 3, title: '提示'}, function (index) {
                 layer.close(index);
                 let loading = layer.load();
-                requestWithToken('/api/village', 'delete', true, {ids: ids.split(',')}, (response) => {
+                requestWithToken('/api/building', 'delete', true, {ids: ids.split(',')}, (response) => {
                     layer.msg(response.message, {icon: 1, time: 1000}, function () {
                         table.reload('village_table');
                     });

@@ -4,11 +4,14 @@ import cn.j0n4than.ex.community.magic.HttpServletRequestEx;
 import cn.j0n4than.ex.community.magic.HttpServletResponseEx;
 import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.ResponseEntity;
+import cn.j0n4than.ex.community.pojo.requests.DeleteRequest;
 import cn.j0n4than.ex.community.pojo.vo.BuildingVo;
 import cn.j0n4than.ex.community.services.BuildingService;
 import cn.j0n4than.ex.community.services.UploadService;
 import cn.j0n4than.ex.community.services.impl.BuildingServiceImpl;
 import cn.j0n4than.ex.community.services.impl.FilesystemUploadServiceImpl;
+
+import java.util.ArrayList;
 
 // 小区
 public class BuildingHandler {
@@ -68,11 +71,11 @@ public class BuildingHandler {
 //    }
 
     // delete
-//    public static void del(HttpServletRequestEx request, HttpServletResponseEx response) {
-//        DeleteRequest deleteRequest = request.bind(DeleteRequest.class);
-//        ArrayList<Object> ids = deleteRequest.getIds();
-//
-//        int count = villageService.del(ids);
-//        response.json(200, new ResponseEntity<>(String.format("成功删除%d条记录", count), ids));
-//    }
+    public static void del(HttpServletRequestEx request, HttpServletResponseEx response) {
+        DeleteRequest deleteRequest = request.bind(DeleteRequest.class);
+        ArrayList<Object> ids = deleteRequest.getIds();
+
+        int count = buildingService.del(ids);
+        response.json(200, new ResponseEntity<>(String.format("成功删除%d条记录", count), ids));
+    }
 }

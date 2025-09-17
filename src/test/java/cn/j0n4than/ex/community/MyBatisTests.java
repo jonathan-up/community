@@ -24,7 +24,7 @@ public class MyBatisTests {
 
         BuildingMapper buildingMapper = sqlSession.getMapper(BuildingMapper.class);
 
-        List<BuildingVo> buildingVos = buildingMapper.selectByName(null);
+        List<BuildingVo> buildingVos = buildingMapper.select(null);
         System.out.println("buildingVos = " + buildingVos);
 
         sqlSession.close();

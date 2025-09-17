@@ -19,13 +19,16 @@
         WHERE id = #{id}
     </update>
 
-    <select id="selectByName" resultType="cn.j0n4than.ex.community.pojo.vo.BuildingVo">
+    <select id="select" resultType="cn.j0n4than.ex.community.pojo.vo.BuildingVo">
         SELECT `b`.`id` as `id`, `b`.`name` as `name`, `period`, `lift`, `village_id`, `v`.`name` as `village_name`, `property`
         FROM `con_building` as `b`
         LEFT JOIN `con_village` as `v` ON `b`.`village_id` = `v`.`id`
         <where>
             <if test="name != null and name != ''">
                 `b`.`name` LIKE '%${name}%'
+            </if>
+            <if test="villageId != null and villageId != -1">
+                `b`.`village_id` = #{villageId}
             </if>
         </where>
     </select>

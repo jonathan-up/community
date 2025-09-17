@@ -22,9 +22,9 @@ public class BuildingHandler {
     public static void page(HttpServletRequestEx request, HttpServletResponseEx response) {
         Integer current = request.getParameterInt("page", 1);
         Integer size = request.getParameterInt("size", 10);
-        String name = request.getParameter("name");
+        BuildingVo buildingVo = request.bindParameter(BuildingVo.class);
 
-        Page<BuildingVo> page = buildingService.findPage(name, current, size);
+        Page<BuildingVo> page = buildingService.findPage(buildingVo, current, size);
         response.json(200, new ResponseEntity<>("OK", page));
     }
 

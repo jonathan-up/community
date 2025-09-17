@@ -14,12 +14,12 @@ import java.util.List;
 public class BuildingServiceImpl implements BuildingService {
 
     @Override
-    public Page<BuildingVo> findPage(String name, int current, int size) {
+    public Page<BuildingVo> findPage(BuildingVo condition, int current, int size) {
         try (
                 SqlSession sqlSession = MybatisUtils.sqlSessionFactory.openSession()
         ) {
             BuildingMapper buildingMapper = sqlSession.getMapper(BuildingMapper.class);
-            try (com.github.pagehelper.Page<BuildingVo> pageInfo = PageHelper.startPage(current, size).doSelectPage(() -> buildingMapper.selectByName(name))) {
+            try (com.github.pagehelper.Page<BuildingVo> pageInfo = PageHelper.startPage(current, size).doSelectPage(() -> buildingMapper.select(condition))) {
                 Page<BuildingVo> buildingVoPage = new Page<>(current, size);
                 buildingVoPage.setTotal((int) pageInfo.getTotal());
                 buildingVoPage.setRecords(pageInfo.getResult());

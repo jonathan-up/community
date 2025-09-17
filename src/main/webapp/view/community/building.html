@@ -12,11 +12,19 @@
 <div class="layui-card">
     <div class="layui-card-body">
         <form class="layui-form" action="">
+
             <div class="layui-form-item">
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">楼栋名称</label>
                     <div class="layui-input-inline">
                         <input type="text" name="name" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">所属小区</label>
+                    <div class="layui-input-inline">
+                        <select id="villageSelect" name="villageId" lay-filter="villages">
+                        </select>
                     </div>
                 </div>
 
@@ -99,6 +107,18 @@
                 {title: '操作', toolbar: '#role-bar', align: 'center', width: 195}
             ]
         ]
+
+        requestWithToken('/api/village?page=1&size=1000', 'get', false, null, response => {
+            console.log(response)
+            const records = response.result.records;
+
+            let opts = '<option value="-1">不过滤所属小区</option>';
+            records.forEach(record => {
+                opts += `<option value="${record.id}">${record.name}</option>`
+            })
+            $('#villageSelect').html(opts)
+            form.render('select')
+        });
 
         table.render({
             elem: '#village_table',

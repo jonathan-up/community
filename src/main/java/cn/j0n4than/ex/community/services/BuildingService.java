@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BuildingService {
 
-    Page<BuildingVo> findPage(String name, int current, int size);
+    Page<BuildingVo> findPage(BuildingVo condition, int current, int size);
 
     int del(List<Object> ids);
 

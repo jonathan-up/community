@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface BuildingMapper {
-    List<BuildingVo> selectByName(String name);
+    List<BuildingVo> select(BuildingVo condition);
 
     int deleteByIds(@Param("ids") List<Object> ids);
 

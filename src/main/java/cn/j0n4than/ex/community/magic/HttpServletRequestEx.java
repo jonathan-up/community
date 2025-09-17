@@ -6,11 +6,16 @@ import cn.j0n4than.ex.community.pojo.entities.User;
 import cn.j0n4than.ex.community.utils.WebUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class HttpServletRequestEx extends HttpServletRequestWrapper {
 
@@ -24,6 +29,35 @@ public class HttpServletRequestEx extends HttpServletRequestWrapper {
      */
     public HttpServletRequestEx(HttpServletRequest request) {
         super(request);
+    }
+
+    public <T> T bindParameter(Class<T> clazz) {
+        try {
+            //1.反射创建pojo对象
+            T bean = clazz.newInstance();
+
+            //2.注册日期转换器
+            ConvertUtils.register(new Converter() {
+                @Override
+                public Object convert(Class clazz, Object value) {
+                    try {
+                        String sDate = (String) value;
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        return df.parse(sDate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new RuntimeException("日期转换失败!");
+                    }
+                }
+            }, Date.class);
+
+            //3.拷贝request的请求数据到指定的pojo中
+            BeanUtils.populate(bean, this.getParameterMap());
+            return bean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("拷贝失败!");
+        }
     }
 
     /**
@@ -64,6 +98,7 @@ public class HttpServletRequestEx extends HttpServletRequestWrapper {
     public Integer getParameterInt(String key) {
         return this.getParameterInt(key, null);
     }
+
     public Integer getParameterInt(String key, Integer _default) {
         String parameter = this.getParameter(key);
         return WebUtils.parseInt(parameter, _default);

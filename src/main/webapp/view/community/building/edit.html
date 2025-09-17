@@ -15,7 +15,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">楼栋名称</label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" lay-verify="title" autocomplete="off"
+                            <input type="text" name="name" lay-verify="required" autocomplete="off"
                                    placeholder="请输入楼栋名称" class="layui-input">
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">所属小区</label>
                         <div class="layui-input-block">
-                            <select id="villageSelect" name="villageId" lay-filter="villages">
+                            <select id="villageSelect" name="villageId" lay-verify="required" lay-filter="villages">
                             </select>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">带有电梯</label>
                         <div class="layui-input-block">
-                            <select name="lift" lay-filter="lift">
+                            <select name="lift" lay-filter="lift" lay-verify="required">
                                 <option value="true">有</option>
                                 <option value="false">无</option>
                             </select>

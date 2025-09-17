@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../component/pear/css/pear.css"/>
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="form-save">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所属小区</label>
+                        <div class="layui-input-block">
+                            <select name="villageId" disabled id="villageSelect" lay-filter="villages">
+                                <option value="">Loading...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所属楼栋</label>
+                        <div class="layui-input-block">
+                            <select disabled id="buildingSelect" name="buildingId" lay-verify="required" lay-filter="lift">
+                                <option value="-1">请先选择所属小区</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">房间号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="houseNo" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入房间号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">房屋名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入房屋名称" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">房屋面积</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="area" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入房屋面积" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所在楼层</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="layer" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入所在楼层" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">朝向</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="toward" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入朝向" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">户型</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="type" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入户型" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用处</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="usage" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入用处" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">装修</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="fitment" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入装修" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所有者</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="person" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入所有者" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">联系方式</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="perPhone" lay-verify="required" autocomplete="off"
+                                   placeholder="请输入联系方式" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+<script src="../../../component/layui/layui.js"></script>
+<script src="../../../component/pear/pear.js"></script>
+<script src="../../js/base.js"></script>
+
+<script src="../../../admin/utils.js"></script>
+
+<script>
+    layui.use(['form', 'jquery', 'upload', 'dtree'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        // 1.获取请求携带id
+        let id = getQueryVariable("id");
+
+        let theRecord = null;
+
+        // Get the record by id
+        requestWithToken(`/api/house/one?id=${id}`, 'get', false, null, response => {
+            theRecord = response.result
+        });
+
+        // Get all villages
+        requestWithToken('/api/village?page=1&size=1000', 'get', false, null, response => {
+            console.log(response)
+            const records = response.result.records;
+
+            let opts = `<option value="-1">请选择所属小区</option>`;
+            records.forEach(record => {
+                opts += `<option value="${record.id}">${record.name}</option>`
+            })
+            const villageSel = $('#villageSelect');
+            villageSel.removeAttr('disabled')
+            villageSel.html(opts)
+        });
+
+        const buildingSel = $('#buildingSelect');
+
+        // Get all buildings by current villageId
+        requestWithToken(`/api/building?page=1&size=1000&villageId=${theRecord.villageId}`, 'get', false, null, response => {
+            const records = response.result.records;
+
+            let opts = `<option value="-1">请选择所属楼栋</option>`;
+            records.forEach(record => {
+                opts += `<option value="${record.id}">${record.name}</option>`
+            })
+            buildingSel.removeAttr('disabled');
+            buildingSel.html(opts);
+        });
+
+        form.val('form-save', {
+            id: 1,
+            villageId: theRecord.villageId,
+            buildingId: theRecord.buildingId,
+            houseNo: theRecord.houseNo,
+            name: theRecord.name,
+            area: theRecord.area,
+            layer: theRecord.layer,
+            toward: theRecord.toward,
+            type: theRecord.type,
+            usage: theRecord.usage,
+            fitment: theRecord.fitment,
+            person: theRecord.person,
+            perPhone: theRecord.perPhone,
+        });
+
+        form.render('select')
+
+        // On village changed
+        form.on('select(villages)', function (data) {
+            const villageId = data.value;
+
+            if (villageId === '-1') {
+                form.val('form-save', {
+                    buildingId: -1,
+                })
+                let opts = `<option value="-1">请选择所属楼栋</option>`;
+                buildingSel.attr('disabled', 'disabled');
+                buildingSel.html(opts);
+                form.render('select');
+                return;
+            }
+
+            requestWithToken(`/api/building?page=1&size=1000&villageId=${villageId}`, 'get', false, null, response => {
+                const records = response.result.records;
+
+                let opts = `<option value="-1">请选择所属楼栋</option>`;
+                records.forEach(record => {
+                    opts += `<option value="${record.id}">${record.name}</option>`
+                })
+                buildingSel.removeAttr('disabled');
+                buildingSel.html(opts);
+                form.render('select');
+            });
+        });
+
+        form.on('submit(save)', function (data) {
+
+            data.field.id = id;
+
+            requestWithToken('/api/house', 'put', true, data.field, response => {
+                layer.msg(response.message, {icon: 1, time: 1000}, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    window.parent.location.reload()
+                });
+            }, err => {
+                layer.msg(err.responseJSON.message, {icon: 2, time: 1000});
+            })
+            return false;
+        });
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

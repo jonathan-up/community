@@ -29,7 +29,7 @@
 				"icon": "layui-icon layui-icon-face-smile",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/user/user.html"
+				"href": "view/system/user.html"
 			},
 			{
 				"id": 602,

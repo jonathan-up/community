@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.j0n4than.ex.community.mappers.BuildingMapper">
     <insert id="insertBatch">
-        INSERT INTO `con_building` (`name`, `villageid`, `period`, `lift`)
+        INSERT INTO `con_building` (`name`, `village_id`, `period`, `lift`)
         VALUES
         <foreach collection="records" item="record" index="index" open="" close="" separator=",">
             (#{record.name}, #{record.villageId}, #{record.period}, #{record.lift})
@@ -13,16 +13,16 @@
     <update id="updateOne">
         UPDATE `con_building`
         SET `name`      = #{name},
-            `villageid` = #{villageId},
+            `village_id` = #{villageId},
             `period`    = #{period},
             `lift`      = #{lift}
         WHERE id = #{id}
     </update>
 
     <select id="selectByName" resultType="cn.j0n4than.ex.community.pojo.vo.BuildingVo">
-        SELECT `b`.`id` as `id`, `b`.`name` as `name`, `period`, `lift`, `villageid` as villageId, `v`.`name` as villageName, `property`
+        SELECT `b`.`id` as `id`, `b`.`name` as `name`, `period`, `lift`, `village_id`, `v`.`name` as `village_name`, `property`
         FROM `con_building` as `b`
-        LEFT JOIN `con_village` as `v` ON `b`.`villageid` = `v`.`id`
+        LEFT JOIN `con_village` as `v` ON `b`.`village_id` = `v`.`id`
         <where>
             <if test="name != null and name != ''">
                 `b`.`name` LIKE '%${name}%'
@@ -30,7 +30,7 @@
         </where>
     </select>
     <select id="selectById" resultType="cn.j0n4than.ex.community.pojo.entities.Building">
-        SELECT `id`, `name`, `villageid` as `villageId`, `period`, `lift`
+        SELECT `id`, `name`, `village_id`, `period`, `lift`
         FROM `con_building`
         WHERE `id` = #{id}
         LIMIT 1

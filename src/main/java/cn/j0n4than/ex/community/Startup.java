@@ -1,9 +1,6 @@
 package cn.j0n4than.ex.community;
 
-import cn.j0n4than.ex.community.handlers.AuthHandler;
-import cn.j0n4than.ex.community.handlers.BuildingHandler;
-import cn.j0n4than.ex.community.handlers.ProfileHandler;
-import cn.j0n4than.ex.community.handlers.VillageHandler;
+import cn.j0n4than.ex.community.handlers.*;
 
 public class Startup {
 
@@ -24,5 +21,11 @@ public class Startup {
         Router.register("/building", HttpMethod.DELETE, BuildingHandler::del);
         Router.register("/building", HttpMethod.PUT, BuildingHandler::save);
         Router.register("/building/one", HttpMethod.GET, BuildingHandler::one);
+
+        // 房屋
+        Router.register("/house/one", HttpMethod.GET, HouseHandler::one);
+        Router.register("/house", HttpMethod.GET, HouseHandler::page);
+        Router.register("/house", HttpMethod.PUT, HouseHandler::save);
+        Router.register("/house", HttpMethod.DELETE, HouseHandler::del);
     }
 }

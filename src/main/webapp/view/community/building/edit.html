@@ -10,6 +10,7 @@
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
+
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">楼栋名称</label>
@@ -18,6 +19,7 @@
                                    placeholder="请输入楼栋名称" class="layui-input">
                         </div>
                     </div>
+
                     <div class="layui-inline">
                         <label class="layui-form-label">建筑年份</label>
                         <div class="layui-input-block">
@@ -26,7 +28,9 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="layui-form-item">
+
                     <div class="layui-inline">
                         <label class="layui-form-label">所属小区</label>
                         <div class="layui-input-block">
@@ -34,6 +38,7 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="layui-inline">
                         <label class="layui-form-label">带有电梯</label>
                         <div class="layui-input-block">
@@ -43,7 +48,9 @@
                             </select>
                         </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -70,7 +77,6 @@
     layui.use(['form', 'jquery', 'upload'], function () {
         let form = layui.form;
         let $ = layui.jquery;
-        let upload = layui.upload;
 
         //1.获取请求携带id
         let id = getQueryVariable("id");
@@ -84,7 +90,6 @@
                 opts += `<option ${record.id === id ? 'select' : ''} value="${record.id}">${record.name}</option>`
             })
             $('#villageSelect').html(opts)
-            form.render('select')
         });
 
         //2.向后端发起ajax请求，根据id查询小区的数据
@@ -97,12 +102,15 @@
                 name: record.name,
                 period: record.period,
                 villageId: record.villageId,
-                lift: record.list ? 'true' : 'false'
+                lift: record.lift ? 'true' : 'false'
             });
         }, err => {
             console.log(err)
             layer.msg(err.responseJSON.message, {icon: 2, time: 1000});
         });
+
+        // 渲染select
+        form.render('select')
 
         form.on('submit(save)', function (data) {
             data.field.id = id;

@@ -4,7 +4,7 @@
 		"image": "admin/images/logo.png"
 	},
 	"menu": {
-		"data": "admin/data/menu.json",
+		"data": "/api/index/menu",
 		"accordion": true,
 		"control": false,
 		"select": "10",

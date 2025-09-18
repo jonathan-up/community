@@ -134,11 +134,21 @@ layui.define(['table', 'jquery', 'element'], function(exports) {
 	}
 	
 	function getData(url){
-	    var defer = $.Deferred();
-		$.get(url+"?fresh=" + Math.random(), function(result) {
-			 defer.resolve(result)
-		});
-	    return defer.promise();
+
+		var defer = $.Deferred();
+
+		$.ajax({
+			url,
+			async: true,
+			headers: {
+				Authorization: localStorage.getItem("token")
+			},
+			success: response => {
+				defer.resolve(response.result)
+			}
+		})
+
+		return defer.promise();
 	}
 	
 	function renderMenu(option){

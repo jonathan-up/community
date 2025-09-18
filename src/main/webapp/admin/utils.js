@@ -1,3 +1,5 @@
+// H0meV
+
 function requestWithToken(url, method, async, data = null, success_c = null, error_c = null, complete_c = null) {
     const $ = layui.jquery;
     let options = {
@@ -33,4 +35,18 @@ function requestWithToken(url, method, async, data = null, success_c = null, err
         options.data = JSON.stringify(data);
     }
     $.ajax(options);
+}
+
+function paginationParse(res) {
+    if (res.message === "OK") {
+        return {
+            "code": 0,
+            "msg": res.message,
+            "count": res.result.total,
+            "data": res.result.records
+        }
+    }
+    return {
+        "msg": res.message,
+    }
 }

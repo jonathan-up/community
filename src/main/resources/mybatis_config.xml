@@ -48,6 +48,7 @@
         <mapper resource="mappers/VillageMapper.xml"/>
         <mapper resource="mappers/BuildingMapper.xml"/>
         <mapper resource="mappers/HouseMapper.xml"/>
+        <mapper resource="mappers/RoleMapper.xml"/>
     </mappers>
 
 </configuration>

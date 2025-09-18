@@ -28,10 +28,18 @@ public class Startup {
         Router.register("/house", HttpMethod.PUT, HouseHandler::save);
         Router.register("/house", HttpMethod.DELETE, HouseHandler::del);
 
+        // user
         Router.register("/user/one", HttpMethod.GET, UserHandler::one);
         Router.register("/user", HttpMethod.GET, UserHandler::page);
         Router.register("/user", HttpMethod.DELETE, UserHandler::del);
         Router.register("/user", HttpMethod.PUT, UserHandler::save);
         Router.register("/user/switchStatus", HttpMethod.PUT, UserHandler::switchStatus);
+
+        // role
+        Router.register("/role/one", HttpMethod.GET, RoleHandler::one);
+        Router.register("/role", HttpMethod.GET, RoleHandler::page);
+        Router.register("/role", HttpMethod.PUT, RoleHandler::save);
+        Router.register("/role", HttpMethod.DELETE, RoleHandler::del);
+        Router.register("/role/switchStatus", HttpMethod.PUT, RoleHandler::switchStatus);
     }
 }

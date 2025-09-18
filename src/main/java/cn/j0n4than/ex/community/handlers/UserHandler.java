@@ -7,7 +7,10 @@ import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.ResponseEntity;
 import cn.j0n4than.ex.community.pojo.entities.User;
 import cn.j0n4than.ex.community.pojo.requests.DeleteRequest;
+import cn.j0n4than.ex.community.pojo.requests.UserAssignRolesRequest;
+import cn.j0n4than.ex.community.services.RoleService;
 import cn.j0n4than.ex.community.services.UserService;
+import cn.j0n4than.ex.community.services.impl.RoleServiceImpl;
 import cn.j0n4than.ex.community.services.impl.UserServiceImpl;
 import cn.j0n4than.ex.community.utils.Md5Utils;
 
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 
 public class UserHandler {
     private final static UserService userService = new UserServiceImpl();
+    private final static RoleService roleService = new RoleServiceImpl();
 
     public static void page(HttpServletRequestEx request, HttpServletResponseEx response) {
         Integer current = request.getParameterInt("page", 1);
@@ -91,5 +95,14 @@ public class UserHandler {
             return;
         }
         response.json(500, new ResponseEntity<>("更新失败"));
+    }
+
+    public static void assignRoles(HttpServletRequestEx request, HttpServletResponseEx response) {
+
+        UserAssignRolesRequest bind = request.bind(UserAssignRolesRequest.class);
+
+        int res = roleService.assignRolesToUser(bind.getId(), bind.getRoles());
+
+        response.json(200, new ResponseEntity<>("请求成功", res));
     }
 }

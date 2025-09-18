@@ -1,6 +1,7 @@
 package cn.j0n4than.ex.community.mappers;
 
 import cn.j0n4than.ex.community.pojo.entities.Role;
+import cn.j0n4than.ex.community.pojo.entities.RoleUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,4 +20,8 @@ public interface RoleMapper {
     Role selectById(Object id);
 
     int switchStatus(Object id);
+
+    int deleteRolesByUserId(Object id);
+
+    int insertRoleUser(@Param("records") List<RoleUser> records);
 }

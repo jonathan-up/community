@@ -4,9 +4,11 @@ import cn.j0n4than.ex.community.SqlSessionHolder;
 import cn.j0n4than.ex.community.mappers.RoleMapper;
 import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.entities.Role;
+import cn.j0n4than.ex.community.pojo.entities.RoleUser;
 import cn.j0n4than.ex.community.services.RoleService;
 import com.github.pagehelper.PageHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoleServiceImpl implements RoleService {
@@ -62,5 +64,24 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> findByUserId(Object id) {
         RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
         return mapper.selectByUserId(id);
+    }
+
+    @Override
+    public int assignRolesToUser(Integer uid, List<Integer> roleIds) {
+        RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
+
+        // delete first
+        mapper.deleteRolesByUserId(uid);
+
+        // reassign
+        ArrayList<RoleUser> records = new ArrayList<>();
+        for (Integer roleId : roleIds) {
+            RoleUser record = new RoleUser();
+            record.setUid(uid);
+            record.setRid(roleId);
+            records.add(record);
+        }
+
+        return mapper.insertRoleUser(records);
     }
 }

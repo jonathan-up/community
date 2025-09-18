@@ -65,6 +65,8 @@
 <script type="text/html" id="user-bar">
     <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
     </button>
+    <button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="role"><i class="layui-icon layui-icon-key"></i>
+    </button>
     <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
@@ -132,7 +134,7 @@
                     title: '操作',
                     toolbar: '#user-bar',
                     align: 'center',
-                    width: 130
+                    // width: 130
                 }
             ]
         ]
@@ -172,6 +174,8 @@
                 window.remove(obj);
             } else if (obj.event === 'edit') {
                 window.edit(obj);
+            } else if (obj.event === 'role') {
+                window.role(obj);
             }
         });
 
@@ -277,6 +281,16 @@
                 }, () => {
                     layer.close(loading);
                 });
+            });
+        }
+
+        window.role = (obj) => {
+            layer.open({
+                type: 2,
+                title: '分配角色',
+                shade: 0.1,
+                area: ['500px', '400px'],
+                content: MODULE_PATH + `role.html?id=${obj.data.id}&username=${obj.data.username}`
             });
         }
 

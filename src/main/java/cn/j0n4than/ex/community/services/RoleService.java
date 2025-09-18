@@ -20,4 +20,6 @@ public interface RoleService {
     int switchStatus(Object id);
 
     List<Role> findByUserId(Object id);
+
+    int assignRolesToUser(Integer uid, List<Integer> roleIds);
 }

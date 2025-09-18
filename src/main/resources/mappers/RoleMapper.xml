@@ -10,6 +10,13 @@
             #{name}, #{description}, #{status}
         </foreach>
     </insert>
+    <insert id="insertRoleUser">
+        INSERT INTO `con_role_user` (uid, rid, created) VALUES
+        <foreach collection="records" item="record" index="index" separator=",">
+            (#{record.uid}, #{record.rid}, NOW())
+        </foreach>
+    </insert>
+
     <update id="updateOne">
         UPDATE `con_role`
         SET `name`        = #{name},
@@ -50,4 +57,10 @@
             #{id}
         </foreach>
     </delete>
+    <delete id="deleteRolesByUserId">
+        DELETE
+        FROM `con_role_user`
+        WHERE uid = #{id}
+    </delete>
+
 </mapper>

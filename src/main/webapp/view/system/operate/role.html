@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../component/pear/css/pear.css"/>
+</head>
+<body>
+
+<form class="layui-form" lay-filter="form-custom" action="">
+    <div class="mainBox">
+        <div class="main-container">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" required lay-verify="required" disabled placeholder=""
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">复选框</label>
+                <div id="roleCheckboxes" class="layui-input-block">
+                    <input disabled type="checkbox" name="role[]" value="-1" title="暂无角色">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="sub">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+
+<script src="../../../component/layui/layui.js"></script>
+<script src="../../../component/pear/pear.js"></script>
+<script src="../../js/base.js"></script>
+<script src="../../../admin/utils.js"></script>
+<script>
+    layui.use(['form', 'jquery'], function () {
+        const form = layui.form;
+        const $ = layui.$
+
+        const id = getQueryVariable("id");
+
+        // set username
+        form.val('form-custom', {
+            username: getQueryVariable("username")
+        })
+
+        // get the user's roles
+        let userRoleIds = []
+        requestWithToken(`/api/role/user?id=${id}`, 'get', false, null, response => {
+            const records = response.result;
+            if (!records.length) {
+                return;
+            }
+            records.forEach(record => {
+                userRoleIds.push(record.id)
+            })
+        });
+
+        // get all roles
+        requestWithToken('/api/role?page=1&size=1000', 'get', false, null, response => {
+            const records = response.result.records;
+
+            let opts = '';
+            records.forEach(record => {
+                opts += `<input ${userRoleIds.includes(record.id) ? 'checked' : ''} type="checkbox" name="role[]" value="${record.id}" title="${record.name}">`
+            })
+            $('#roleCheckboxes').html(opts)
+        });
+
+        // render checkbox
+        form.render('checkbox')
+
+        // on submit
+        // the data should be like: {id: xx, roles: [x,x,x]}
+        form.on('submit(sub)', function (data) {
+
+            // request body
+            let requestBody = {};
+            requestBody.id = id
+            requestBody.roles = []
+
+            for (const [k, v] of Object.entries(data.field)) {
+                if (k.startsWith("role")) {
+                    requestBody.roles.push(v)
+                }
+            }
+
+            console.log(requestBody)
+
+            requestWithToken("/api/user/assignRoles", 'post', false, requestBody, response => {
+                layer.msg(response.message, {icon: 1, time: 1000}, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    parent.layui.table.reload("user-table");
+                });
+            }, result => {
+                layer.msg(result.responseJSON.message, {icon: 2, time: 1000});
+            });
+            return false;
+        });
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

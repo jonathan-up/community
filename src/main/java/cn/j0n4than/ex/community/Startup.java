@@ -34,6 +34,7 @@ public class Startup {
         Router.register("/user", HttpMethod.DELETE, UserHandler::del);
         Router.register("/user", HttpMethod.PUT, UserHandler::save);
         Router.register("/user/switchStatus", HttpMethod.PUT, UserHandler::switchStatus);
+        Router.register("/user/assignRoles", HttpMethod.POST, UserHandler::assignRoles);
 
 
         // role

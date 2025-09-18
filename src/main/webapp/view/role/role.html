@@ -29,6 +29,8 @@
 <script type="text/html" id="role-bar">
     <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
     </button>
+    <button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="power"><i class="layui-icon layui-icon-key"></i>
+    </button>
     <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
@@ -54,7 +56,7 @@
                 // {title: '拥有权限', field: 'pname', align:'center'},
                 {title: '描述', field: 'description', align: 'center'},
                 {
-                    title: '状态', field: 'status', width: 85, templet: (row) => {
+                    title: '状态', field: 'status', width: 100, templet: (row) => {
                         return `<input type="checkbox" name="status" value="${row.id}" lay-skin="switch" lay-text="启用|禁用" lay-filter="status" ${row.status === 1 ? 'checked' : ''}>`
                     }
                 },
@@ -123,7 +125,7 @@
                 title: '新增',
                 shade: 0.1,
                 maxmin: true,
-                area: ['800px', '500px'],
+                area: ['800px', '300px'],
                 content: MODULE_PATH + 'add.html'
             });
         }
@@ -190,6 +192,17 @@
         window.refresh = function () {
             table.reload('village_table');
         }
+
+        window.power = function (obj) {
+            layer.open({
+                type: 2,
+                title: '授权',
+                shade: 0.1,
+                area: ['320px', '400px'],
+                content: MODULE_PATH + 'power.html'
+            });
+        }
+
     })
 </script>
 </body>

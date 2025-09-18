@@ -73,6 +73,10 @@ public class RoleServiceImpl implements RoleService {
         // delete first
         mapper.deleteRolesByUserId(uid);
 
+        if (roleIds.isEmpty()) {
+            return 0;
+        }
+
         // reassign
         ArrayList<RoleUser> records = new ArrayList<>();
         for (Integer roleId : roleIds) {

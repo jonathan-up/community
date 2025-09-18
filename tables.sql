@@ -774,7 +774,7 @@ VALUES (18, 'test3', 's5KtkwaP7sNMj2576cHMZQ==', 'd9b656d2-a728-4d0f-bd56-692230
 -- ----------------------------
 -- Table structure for con_user_role
 -- ----------------------------
-DROP TABLE IF EXISTS `con_user_role`;
+DROP TABLE IF EXISTS con_role_user;
 CREATE TABLE `con_user_role`
 (
     `id`      int(0) NOT NULL AUTO_INCREMENT,
@@ -791,29 +791,29 @@ CREATE TABLE `con_user_role`
 -- ----------------------------
 -- Records of con_user_role
 -- ----------------------------
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (1, 1, 1, '2024-10-12');
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (2, 2, 2, '2024-10-11');
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (3, 3, 3, '2024-10-04');
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (4, 4, 3, '2024-10-11');
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (5, 1, 2, '2024-10-16');
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (6, 2, 3, NULL);
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (8, 14, 4, NULL);
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (9, 15, 5, NULL);
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (10, 15, 4, NULL);
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (11, 16, 2, NULL);
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (12, 17, 6, NULL);
-INSERT INTO `con_user_role`
+INSERT INTO con_role_user
 VALUES (13, 18, 7, NULL);
 
 -- ----------------------------

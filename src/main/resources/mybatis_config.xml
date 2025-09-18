@@ -49,6 +49,7 @@
         <mapper resource="mappers/BuildingMapper.xml"/>
         <mapper resource="mappers/HouseMapper.xml"/>
         <mapper resource="mappers/RoleMapper.xml"/>
+        <mapper resource="mappers/MenuMapper.xml"/>
     </mappers>
 
 </configuration>

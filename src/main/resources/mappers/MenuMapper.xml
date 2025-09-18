@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.j0n4than.ex.community.mappers.MenuMapper">
+    <insert id="insertBatch">
+        INSERT INTO `con_menu` (`title`, `icon`, `type`, `href`, `pid`, `open_type`)
+        VALUES
+        <foreach collection="records" item="record" index="index" separator=",">
+            (#{record.title}, #{record.icon}, #{record.type}, #{record.href}, #{record.pid}, #{record.openType})
+        </foreach>
+    </insert>
+    <update id="updateOne">
+        UPDATE `con_menu`
+        SET `title`     = #{title},
+            `icon`      = #{icon},
+            `type`      = #{type},
+            `href`      = #{href},
+            `pid`       = #{pid},
+            `open_type` = #{openType}
+        WHERE `id` = #{id}
+    </update>
+
+    <select id="select" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
+        SELECT * FROM `con_menu`
+        <where>
+            <if test="title != null and title != ''">
+                `title` LIKE '%${title}%'
+            </if>
+        </where>
+    </select>
+    <select id="selectById" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
+        SELECT *
+        FROM `con_menu`
+        WHERE id = #{id}
+        LIMIT 1
+    </select>
+    <select id="selectMenuForUser" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
+        SELECT DISTINCT *
+        FROM `con_menu`
+        WHERE `id` IN (SELECT `mid`
+                       FROM `con_role_menu`
+                       WHERE `rid` IN (SELECT `rid`
+                                       FROM con_role_user
+                                       WHERE `uid` = #{id}))
+          AND (`type` = 0 OR `type` = 1);
+    </select>
+
+    <delete id="deleteByIds">
+        DELETE
+        FROM `con_menu`
+        WHERE `id` IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,50 +1,55 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../../../component/pear/css/pear.css" />
+    <link rel="stylesheet" href="../../../component/pear/css/pear.css"/>
 </head>
 <body>
-<form class="layui-form" action="">
+<form class="layui-form"  action="" lay-filter="form">
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
                 <div class="layui-form-item">
                     <label class="layui-form-label">账号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="username" value="854085467" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text" name="username" lay-verify="required" autocomplete="off"
+                               placeholder="请输入用户名" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">姓名</label>
                     <div class="layui-input-block">
-                        <input type="text"  name="realName" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text" name="realName" lay-verify="required" autocomplete="off"
+                               placeholder="请输入姓名" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">邮箱</label>
                     <div class="layui-input-block">
-                        <input type="text"  name="email" value="854085467@qq.com" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text" name="email" lay-verify="required" autocomplete="off"
+                               placeholder="请输入邮箱" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">密码</label>
                     <div class="layui-input-block">
-                        <input type="text"  name="password" value="*******" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text" name="pwd" lay-verify="title" autocomplete="off" placeholder="留空则不修改"
+                               class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">电话</label>
                     <div class="layui-input-block">
-                        <input type="text"  name="phone" value="15555555555" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text" name="phone" lay-verify="required" autocomplete="off"
+                               placeholder="请输入电话" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">性别</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="sex" value="0" title="男">
-                        <input type="radio" name="sex" value="1" title="女" checked>
+                        <input required type="radio" name="sex" value="1" title="男">
+                        <input required type="radio" name="sex" value="0" title="女" checked>
                     </div>
                 </div>
             </div>
@@ -65,39 +70,48 @@
 </form>
 <script src="../../../component/layui/layui.js"></script>
 <script src="../../../component/pear/pear.js"></script>
+<script src="../../js/base.js"></script>
+<script src="../../../admin/utils.js"></script>
 <script>
-layui.use(['form','jquery'],function(){
-    let form = layui.form;
-    let $ = layui.jquery;
+    layui.use(['form', 'jquery'], function () {
+        const form = layui.form;
 
-    form.on('submit(user-save)', function(data){
-        let roleIds = "";
-        $('input[type=checkbox]:checked').each(function() {
-            roleIds += $(this).val()+",";
-        });
-        roleIds = roleIds.substr(0,roleIds.length-1);
-        data.field.roleIds = roleIds;
+        const username = getQueryVariable("username");
 
-        $.ajax({
-            url:'/system/user/save',
-            data:JSON.stringify(data.field),
-            dataType:'json',
-            contentType:'application/json',
-            type:'post',
-            success:function(result){
-                if(result.success){
-                    layer.msg(result.msg,{icon:1,time:1000},function(){
-                        parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                        parent.layui.table.reload("user-table");
-                    });
-                }else{
-                    layer.msg(result.msg,{icon:2,time:1000});
-                }
-            }
+        let theUser = null;
+
+        requestWithToken(`/api/user/one?username=${username}`, 'get', false, null, response => {
+            theUser = response.result;
+        }, err => {
+            layer.msg(err.responseJSON.message, {
+                icon: 2,
+                time: 1000
+            });
         })
-        return false;
-    });
-})
+
+        form.val('form', theUser)
+
+        form.on('submit(user-save)', function (data) {
+            data.field.id = theUser.id;
+
+            // let roleIds = "";
+            // $('input[type=checkbox]:checked').each(function() {
+            //     roleIds += $(this).val()+",";
+            // });
+            // roleIds = roleIds.substr(0,roleIds.length-1);
+            // data.field.roleIds = roleIds;
+
+            requestWithToken("/api/user", 'put', false, data.field, response => {
+                layer.msg(response.message, {icon: 1, time: 1000}, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    parent.layui.table.reload("user-table");
+                });
+            }, result => {
+                layer.msg(result.responseJSON.message, {icon: 2, time: 1000});
+            });
+            return false;
+        });
+    })
 </script>
 <script>
 </script>

@@ -1,4 +1,4 @@
-function requestWithToken(url, method, async, data, success_c = null, error_c = null, complete_c = null) {
+function requestWithToken(url, method, async, data = null, success_c = null, error_c = null, complete_c = null) {
     const $ = layui.jquery;
     let options = {
         url,

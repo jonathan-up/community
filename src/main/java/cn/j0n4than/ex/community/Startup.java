@@ -27,5 +27,11 @@ public class Startup {
         Router.register("/house", HttpMethod.GET, HouseHandler::page);
         Router.register("/house", HttpMethod.PUT, HouseHandler::save);
         Router.register("/house", HttpMethod.DELETE, HouseHandler::del);
+
+        Router.register("/user/one", HttpMethod.GET, UserHandler::one);
+        Router.register("/user", HttpMethod.GET, UserHandler::page);
+        Router.register("/user", HttpMethod.DELETE, UserHandler::del);
+        Router.register("/user", HttpMethod.PUT, UserHandler::save);
+        Router.register("/user/switchStatus", HttpMethod.PUT, UserHandler::switchStatus);
     }
 }

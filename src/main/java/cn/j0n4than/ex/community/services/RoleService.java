@@ -18,4 +18,6 @@ public interface RoleService {
     Role findOne(Object id);
 
     int switchStatus(Object id);
+
+    List<Role> findByUserId(Object id);
 }

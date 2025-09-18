@@ -8,6 +8,8 @@ import java.util.List;
 public interface RoleMapper {
     List<Role> select(Role condition);
 
+    List<Role> selectByUserId(Object id);
+
     int deleteByIds(@Param("ids") List<Object> ids);
 
     int insertBatch(@Param("records") List<Role> records);

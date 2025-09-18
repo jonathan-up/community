@@ -11,6 +11,7 @@ import cn.j0n4than.ex.community.services.RoleService;
 import cn.j0n4than.ex.community.services.impl.RoleServiceImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // 角色
 public class RoleHandler {
@@ -87,5 +88,15 @@ public class RoleHandler {
             return;
         }
         response.json(500, new ResponseEntity<>("更新失败"));
+    }
+
+    public static void user(HttpServletRequestEx request, HttpServletResponseEx response) {
+        Integer id = request.getParameterInt("id");
+        if (id == null) {
+            throw new HandlerException(400, "Invalid id", null);
+        }
+
+        List<Role> records = roleService.findByUserId(id);
+        response.json(200, new ResponseEntity<>("OK", records));
     }
 }

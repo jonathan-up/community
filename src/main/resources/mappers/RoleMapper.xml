@@ -31,8 +31,15 @@
         </where>
     </select>
     <select id="selectById" resultType="cn.j0n4than.ex.community.pojo.entities.Role">
-        SELECT * FROM `con_role`
-        WHERE `id` = #{id} LIMIT 1
+        SELECT *
+        FROM `con_role`
+        WHERE `id` = #{id}
+        LIMIT 1
+    </select>
+    <select id="selectByUserId" resultType="cn.j0n4than.ex.community.pojo.entities.Role">
+        SELECT *
+        FROM `con_role`
+        WHERE id IN (SELECT `rid` FROM `con_role_user` WHERE `uid` = #{id})
     </select>
 
     <delete id="deleteByIds">

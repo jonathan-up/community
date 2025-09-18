@@ -35,11 +35,13 @@ public class Startup {
         Router.register("/user", HttpMethod.PUT, UserHandler::save);
         Router.register("/user/switchStatus", HttpMethod.PUT, UserHandler::switchStatus);
 
+
         // role
         Router.register("/role/one", HttpMethod.GET, RoleHandler::one);
         Router.register("/role", HttpMethod.GET, RoleHandler::page);
         Router.register("/role", HttpMethod.PUT, RoleHandler::save);
         Router.register("/role", HttpMethod.DELETE, RoleHandler::del);
         Router.register("/role/switchStatus", HttpMethod.PUT, RoleHandler::switchStatus);
+        Router.register("/role/user", HttpMethod.GET, RoleHandler::user);
     }
 }

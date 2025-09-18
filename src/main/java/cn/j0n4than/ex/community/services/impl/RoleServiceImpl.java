@@ -57,4 +57,10 @@ public class RoleServiceImpl implements RoleService {
         RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
         return mapper.switchStatus(id);
     }
+
+    @Override
+    public List<Role> findByUserId(Object id) {
+        RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
+        return mapper.selectByUserId(id);
+    }
 }

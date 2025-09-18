@@ -47,6 +47,7 @@ public class ServletDispatcher extends HttpServlet {
             new HttpServletResponseEx(resp)
                     .json(e.getHttpStatus(), new ResponseEntity<>(e.getMessage(), e.getResult()));
         } catch (Exception e) {
+            // TODO rollback?
             new HttpServletResponseEx(resp)
                     .json(500, new ResponseEntity<>("500 Server Internal Error", e.getMessage()));
         }

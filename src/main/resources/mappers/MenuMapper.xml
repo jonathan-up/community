@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.j0n4than.ex.community.mappers.MenuMapper">
     <insert id="insertBatch">
-        INSERT INTO `con_menu` (`title`, `icon`, `type`, `href`, `pid`, `open_type`)
+        INSERT INTO `con_menu` (`title`, `icon`, `type`, `href`, `pid`, `open_type`, `status`)
         VALUES
         <foreach collection="records" item="record" index="index" separator=",">
-            (#{record.title}, #{record.icon}, #{record.type}, #{record.href}, #{record.pid}, #{record.openType})
+            (#{record.title}, #{record.icon}, #{record.type}, #{record.href}, #{record.pid}, #{record.openType}, #{record.status})
         </foreach>
     </insert>
     <update id="updateOne">
@@ -17,7 +17,8 @@
             `type`      = #{type},
             `href`      = #{href},
             `pid`       = #{pid},
-            `open_type` = #{openType}
+            `open_type` = #{openType},
+            `status`    = #{status}
         WHERE `id` = #{id}
     </update>
 

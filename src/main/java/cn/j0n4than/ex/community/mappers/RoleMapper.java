@@ -1,6 +1,7 @@
 package cn.j0n4than.ex.community.mappers;
 
 import cn.j0n4than.ex.community.pojo.entities.Role;
+import cn.j0n4than.ex.community.pojo.entities.RoleMenu;
 import cn.j0n4than.ex.community.pojo.entities.RoleUser;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,5 +24,9 @@ public interface RoleMapper {
 
     int deleteRolesByUserId(Object id);
 
+    int deleteMenusByRoleId(Object id);
+
     int insertRoleUser(@Param("records") List<RoleUser> records);
+
+    int insertRoleMenu(@Param("records") List<RoleMenu> records);
 }

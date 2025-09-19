@@ -18,4 +18,6 @@ public interface MenuService {
     Menu findOne(Object id);
 
     List<Menu> findForUser(Object id);
+
+    List<Menu> findForRole(Object id);
 }

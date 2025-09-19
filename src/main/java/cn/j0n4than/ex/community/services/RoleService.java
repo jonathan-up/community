@@ -22,4 +22,6 @@ public interface RoleService {
     List<Role> findByUserId(Object id);
 
     int assignRolesToUser(Integer uid, List<Integer> roleIds);
+
+    int assignMenusToRole(Integer rid, List<Integer> menuIds);
 }

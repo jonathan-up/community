@@ -40,6 +40,11 @@
                                        WHERE `uid` = #{id}))
           AND (`type` = 0 OR `type` = 1);
     </select>
+    <select id="selectMenuByRoleId" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
+        SELECT *
+        FROM `con_menu`
+        WHERE `id` IN (SELECT `mid` FROM `con_role_menu` WHERE rid = #{id})
+    </select>
 
     <delete id="deleteByIds">
         DELETE

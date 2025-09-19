@@ -17,4 +17,6 @@ public interface MenuMapper {
     Menu selectById(Object id);
 
     List<Menu> selectMenuForUser(Object id);
+
+    List<Menu> selectMenuByRoleId(Object id);
 }

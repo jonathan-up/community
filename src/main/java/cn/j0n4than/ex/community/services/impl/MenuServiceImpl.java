@@ -7,6 +7,7 @@ import cn.j0n4than.ex.community.pojo.entities.Menu;
 import cn.j0n4than.ex.community.services.MenuService;
 import com.github.pagehelper.PageHelper;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MenuServiceImpl implements MenuService {
@@ -50,5 +51,11 @@ public class MenuServiceImpl implements MenuService {
     public List<Menu> findForUser(Object id) {
         MenuMapper mapper = SqlSessionHolder.value.get().getMapper(MenuMapper.class);
         return mapper.selectMenuForUser(id);
+    }
+
+    @Override
+    public List<Menu> findForRole(Object id) {
+        MenuMapper mapper = SqlSessionHolder.value.get().getMapper(MenuMapper.class);
+        return mapper.selectMenuByRoleId(id);
     }
 }

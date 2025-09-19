@@ -3,11 +3,9 @@ package cn.j0n4than.ex.community.handlers;
 import cn.j0n4than.ex.community.exceptions.HandlerException;
 import cn.j0n4than.ex.community.magic.HttpServletRequestEx;
 import cn.j0n4than.ex.community.magic.HttpServletResponseEx;
-import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.ResponseEntity;
 import cn.j0n4than.ex.community.pojo.entities.Menu;
 import cn.j0n4than.ex.community.pojo.requests.DeleteRequest;
-import cn.j0n4than.ex.community.pojo.vo.MenuVo;
 import cn.j0n4than.ex.community.pojo.vo.MenusVo;
 import cn.j0n4than.ex.community.services.MenuService;
 import cn.j0n4than.ex.community.services.impl.MenuServiceImpl;
@@ -37,17 +35,23 @@ public class MenuHandler {
 
         List<Menu> allRecords = menuService.findAll();
 
-//        ArrayList<MenusVo> top = new ArrayList<>();
-//
-//        for (Menu record : allRecords) {
-//            if (record.getPid() == 0) {
-//                MenusVo menusVo = new MenusVo(record);
-//                top.add(menusVo);
-//                findChildren(menusVo, allRecords);
-//            }
-//        }
-
         response.json(200, new ResponseEntity<>("OK", allRecords));
+    }
+
+    public static void tree(HttpServletRequestEx request, HttpServletResponseEx response) {
+        List<Menu> allRecords = menuService.findAll();
+
+        ArrayList<MenusVo> top = new ArrayList<>();
+
+        for (Menu record : allRecords) {
+            if (record.getPid() == 0) {
+                MenusVo menusVo = new MenusVo(record);
+                top.add(menusVo);
+                findChildren(menusVo, allRecords);
+            }
+        }
+
+        response.json(200, new ResponseEntity<>("OK", top));
     }
 
     // get one
@@ -97,5 +101,16 @@ public class MenuHandler {
 
         int count = menuService.del(ids);
         response.json(200, new ResponseEntity<>(String.format("成功删除%d条记录", count), ids));
+    }
+
+    public static void role(HttpServletRequestEx request, HttpServletResponseEx response) {
+        Integer id = request.getParameterInt("id");
+        if (id == null) {
+            throw new HandlerException(400, "Invalid id", null);
+        }
+
+        List<Menu> records = menuService.findForRole(id);
+
+        response.json(200, new ResponseEntity<>("OK", records));
     }
 }

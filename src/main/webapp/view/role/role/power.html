@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../component/pear/css/pear.css"/>
+</head>
+<body>
+
+<form class="layui-form" lay-filter="form-custom" action="">
+    <div class="mainBox">
+        <div class="main-container">
+
+            <div id="tree"></div>
+
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="sub">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+
+<script src="../../../component/layui/layui.js"></script>
+<script src="../../../component/pear/pear.js"></script>
+<script src="../../js/base.js"></script>
+<script src="../../../admin/utils.js"></script>
+<script>
+    function findChildren(parent, cb) {
+        cb(parent);
+        if (parent.children.length > 0) {
+            parent.children.forEach(child => {
+                findChildren(child, cb)
+            })
+        }
+    }
+
+    layui.use(['form', 'jquery', 'tree'], function () {
+        const form = layui.form;
+        const tree = layui.tree;
+
+        const roleId = getQueryVariable("roleId");
+
+        let theTree = [];
+        let userMenuIds = [];
+
+        // all menu nodes
+        requestWithToken("/api/menu/tree", 'get', false, null, response => {
+            theTree = response.result
+        }, result => {
+            layer.msg(result.responseJSON.message, {icon: 2, time: 1000});
+        });
+
+        // menu nodes that role have
+        requestWithToken(`/api/menu/role?id=${roleId}`, 'get', false, null, response => {
+            response.result.forEach(record => {
+                userMenuIds.push(record.id)
+            })
+        }, result => {
+            layer.msg(result.responseJSON.message, {icon: 2, time: 1000});
+        });
+
+        // checked nodes
+        theTree.forEach(parent => {
+            findChildren(parent, child => {
+                if (userMenuIds.includes(child.id)) {
+                    child.checked = true
+                }
+            })
+        })
+
+        const treeIns = tree.render({
+            elem: '#tree',
+            data: theTree,
+            showCheckbox: true,
+            edit: [/**'add', 'update', 'del'**/] // 开启节点的右侧操作图标
+        });
+
+        // submit
+        form.on('submit(sub)', function (data) {
+
+            // build request body
+            const requestBody = {}
+            requestBody.id = roleId;
+            requestBody.menus = [];
+
+            // get checked nodes
+            const checked = treeIns.getChecked()
+
+            // put these in request body
+            checked.forEach(parent => {
+                findChildren(parent, child => {
+                    requestBody.menus.push(child.id)
+                })
+            })
+
+            requestWithToken("/api/role/assignMenus", 'post', false, requestBody, response => {
+                layer.msg(response.message, {icon: 1, time: 1000}, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+
+                    parent.layui.table.reload("village_table");
+                });
+            }, result => {
+                layer.msg(result.responseJSON.message, {icon: 2, time: 1000});
+            });
+            return false;
+        });
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

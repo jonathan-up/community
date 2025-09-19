@@ -7,6 +7,7 @@ import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.ResponseEntity;
 import cn.j0n4than.ex.community.pojo.entities.Role;
 import cn.j0n4than.ex.community.pojo.requests.DeleteRequest;
+import cn.j0n4than.ex.community.pojo.requests.RoleAssignMenusRequest;
 import cn.j0n4than.ex.community.services.RoleService;
 import cn.j0n4than.ex.community.services.impl.RoleServiceImpl;
 
@@ -98,5 +99,13 @@ public class RoleHandler {
 
         List<Role> records = roleService.findByUserId(id);
         response.json(200, new ResponseEntity<>("OK", records));
+    }
+
+    public static void assignMenus(HttpServletRequestEx request, HttpServletResponseEx response) {
+        RoleAssignMenusRequest bind = request.bind(RoleAssignMenusRequest.class);
+
+        int res = roleService.assignMenusToRole(bind.getId(), bind.getMenus());
+
+        response.json(200, new ResponseEntity<>("请求成功", res));
     }
 }

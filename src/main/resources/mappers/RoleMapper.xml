@@ -11,9 +11,15 @@
         </foreach>
     </insert>
     <insert id="insertRoleUser">
-        INSERT INTO `con_role_user` (uid, rid, created) VALUES
+        INSERT INTO `con_role_user` (`uid`, `rid`, `created`) VALUES
         <foreach collection="records" item="record" index="index" separator=",">
             (#{record.uid}, #{record.rid}, NOW())
+        </foreach>
+    </insert>
+    <insert id="insertRoleMenu">
+        INSERT INTO `con_role_menu` (`mid`, `rid`, created) VALUES
+        <foreach collection="records" item="record" index="index" separator=",">
+            (#{record.mid}, #{record.rid}, NOW())
         </foreach>
     </insert>
 
@@ -62,6 +68,11 @@
         DELETE
         FROM `con_role_user`
         WHERE uid = #{id}
+    </delete>
+    <delete id="deleteMenusByRoleId">
+        DELETE
+        FROM `con_role_menu`
+        WHERE rid = #{id}
     </delete>
 
 </mapper>

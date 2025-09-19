@@ -4,6 +4,7 @@ import cn.j0n4than.ex.community.SqlSessionHolder;
 import cn.j0n4than.ex.community.mappers.RoleMapper;
 import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.entities.Role;
+import cn.j0n4than.ex.community.pojo.entities.RoleMenu;
 import cn.j0n4than.ex.community.pojo.entities.RoleUser;
 import cn.j0n4than.ex.community.services.RoleService;
 import com.github.pagehelper.PageHelper;
@@ -87,5 +88,28 @@ public class RoleServiceImpl implements RoleService {
         }
 
         return mapper.insertRoleUser(records);
+    }
+
+    @Override
+    public int assignMenusToRole(Integer rid, List<Integer> menuIds) {
+        RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
+
+        // delete first
+        mapper.deleteMenusByRoleId(rid);
+
+        if (menuIds.isEmpty()) {
+            return 0;
+        }
+
+        // reassign
+        ArrayList<RoleMenu> records = new ArrayList<>();
+        for (Integer menuId : menuIds) {
+            RoleMenu record = new RoleMenu();
+            record.setMid(menuId);
+            record.setRid(rid);
+            records.add(record);
+        }
+
+        return mapper.insertRoleMenu(records);
     }
 }

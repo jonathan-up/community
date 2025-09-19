@@ -45,9 +45,12 @@ public class Startup {
         Router.register("/role", HttpMethod.DELETE, RoleHandler::del);
         Router.register("/role/switchStatus", HttpMethod.PUT, RoleHandler::switchStatus);
         Router.register("/role/user", HttpMethod.GET, RoleHandler::user);
+        Router.register("/role/assignMenus", HttpMethod.POST, RoleHandler::assignMenus);
 
         // menu
         Router.register("/menu/one", HttpMethod.GET, MenuHandler::one);
+        Router.register("/menu/tree", HttpMethod.GET, MenuHandler::tree);
+        Router.register("/menu/role", HttpMethod.GET, MenuHandler::role);
         Router.register("/menu", HttpMethod.GET, MenuHandler::page);
         Router.register("/menu", HttpMethod.PUT, MenuHandler::save);
         Router.register("/menu", HttpMethod.DELETE, MenuHandler::del);

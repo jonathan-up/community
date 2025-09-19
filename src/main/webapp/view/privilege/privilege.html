@@ -38,6 +38,16 @@
         <i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
+    <button
+            class="pear-btn pear-btn-primary pear-btn-md" lay-event="expandAll">
+        <i class="layui-icon layui-icon-triangle-d"></i>
+        展开所有
+    </button>
+    <button
+            class="pear-btn pear-btn-primary pear-btn-md" lay-event="foldAll">
+        <i class="layui-icon layui-icon-triangle-r"></i>
+        折叠所有
+    </button>
 </script>
 
 <script id="power-bar" type="text/html">
@@ -82,12 +92,12 @@
         let MODULE_PATH = "/privilege/";
 
         treetable.render({
-            treeColIndex: 1,
+            treeColIndex: 0,
             treeSpid: 0,
             treeIdName: 'id',
             treePidName: 'pid',
             skin: 'line',
-            treeDefaultClose: false,
+            treeDefaultClose: true,
             toolbar: '#power-toolbar',
             elem: '#power-table',
             url: '/api/menu',
@@ -115,7 +125,7 @@
             }, 'filter', 'print', 'exports'],
             cols: [
                 [
-                    {type: 'checkbox'},
+                    // {type: 'checkbox'},
                     {field: 'title', minWidth: 200, title: '权限名称'},
                     {field: 'icon', title: '图标', templet: '#icon'},
                     {field: 'type', title: '权限类型', templet: '#power-type'},
@@ -144,6 +154,11 @@
                 window.add();
             } else if (obj.event === 'refresh') {
                 window.refresh();
+            } else if (obj.event === 'expandAll') {
+                treetable.expandAll("#power-table")
+            }
+            else if (obj.event === 'foldAll') {
+                treetable.foldAll("#power-table")
             }
         });
 

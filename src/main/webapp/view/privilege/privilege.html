@@ -129,6 +129,14 @@
                     // {type: 'checkbox'},
                     {field: 'title', minWidth: 200, title: '权限名称'},
                     {field: 'icon', title: '图标', templet: '#icon'},
+                    {
+                        field: 'href', minWidth: 200, title: '规则', templet: (row) => {
+                            if (!row.href) {
+                                return '无'
+                            }
+                            return row.href;
+                        }
+                    },
                     {field: 'type', title: '权限类型', templet: '#power-type'},
                     {field: 'status', title: '是否可用', templet: '#power-status'},
                     // {field: 'sort', title: '排序'},

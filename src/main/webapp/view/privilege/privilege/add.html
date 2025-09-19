@@ -1,53 +1,75 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../../../component/pear/css/pear.css" />
+    <link rel="stylesheet" href="../../../component/pear/css/pear.css"/>
 </head>
 <body>
 <form class="layui-form" action="">
     <div class="mainBox">
         <div class="main-container">
-            <div class="main-container">
 
-                <div class="layui-inline">
-                    <div class="layui-card">
-                        <div class="layui-card-header">
-                            父权限
-                        </div>
-                        <div class="layui-card-body">
-                            <ul id="demoTree2" class="dtree" data-id="0"></ul>
-                        </div>
-                    </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">父权限</label>
+                <div class="layui-input-block">
+                    <ul id="pid" class="dtree" data-id="0"></ul>
+                </div>
+            </div>
 
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入权限名称"
+                           autocomplete="off" class="layui-input">
                 </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">权限名称</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="name" required  lay-verify="required" placeholder="请输入权限名" autocomplete="off" class="layui-input">
-                    </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限规则</label>
+                <div class="layui-input-block">
+                    <input type="text" name="href" required lay-verify="title" placeholder="权限规则可留空"
+                           autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">权限规则</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="uri" required  lay-verify="required" placeholder="请输入权限规则" autocomplete="off" class="layui-input">
-                    </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">ICON</label>
+                <div class="layui-input-block">
+                    <input type="text" name="icon" required lay-verify="title" placeholder="ICON可留空"
+                           autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">状态</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="status" value="1" title="启动" checked>
-                        <input type="radio" name="status" value="0" title="禁用" >
-                    </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限类型</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-verify="required" lay-search>
+                        <option value="0">目录</option>
+                        <option value="1">菜单</option>
+                        <option value="2">按钮</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">打开方式</label>
+                <div class="layui-input-block">
+                    <select name="openType" lay-verify="title" lay-search>
+                        <option value="">无</option>
+                        <option value="_iframe">iframe</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status" value="1" title="启动" checked>
+                    <input type="radio" name="status" value="0" title="禁用">
                 </div>
             </div>
         </div>
     </div>
     <div class="bottom">
         <div class="button-container">
-            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="privilege-save">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="privilege-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
             </button>
@@ -60,52 +82,46 @@
 </form>
 <script src="../../../component/layui/layui.js"></script>
 <script src="../../../component/pear/pear.js"></script>
-
+<script src="../../../admin/utils.js"></script>
 
 <script>
-layui.use(['form','jquery','upload','dtree'],function(){
-    let form = layui.form;
-    let $ = layui.jquery;
-    let upload = layui.upload;
-    let dtree = layui.dtree;
+    layui.use(['form', 'jquery', 'upload', 'dtree'], function () {
+        let form = layui.form;
+        let dtree = layui.dtree;
 
-    dtree.render({
-        elem: "#demoTree2",
-        initLevel: "1",
-        method: 'get',
-        url: "http://localhost:8080/community/privilege/all",
-        cache: false, //当取消节点缓存时，则每次加载子节点都会往服务器发送请求
-        select: true,
-        selectInputName: {
-            nodeId: "parentId", //key值为树中可以获取到的值的名称，value值为表单的name
-        }
-    });
-
-
-
-    form.on('submit(privilege-save)', function(data){
-
-
-        $.ajax({
-            url:'http://localhost:8080/community/privilege/add',
-            type:'post',
-            data:JSON.stringify(data.field),
-            dataType:'json',
-            contentType:'application/json',
-            success:function(result){
-                if(result.code==0){
-                    layer.msg(result.msg,{icon:1,time:1000},function(){
-                        parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                        window.parent.location.reload()
-                    });
-                }else{
-                    layer.msg(result.msg,{icon:2,time:1000});
-                }
-            }
+        let data = []
+        requestWithToken('/api/menu/tree', 'get', false, null, response => {
+            data.push({id: 0, title: '根', children: []});
+            data[0].children.push(...response.result);
         })
-        return false;
-    });
-})
+
+        dtree.render({
+            elem: "#pid",
+            initLevel: "10",
+            data,
+            cache: false, //当取消节点缓存时，则每次加载子节点都会往服务器发送请求
+            select: true,
+            selectInputName: {
+                nodeId: "pid", //key值为树中可以获取到的值的名称，value值为表单的name
+            }
+        });
+
+
+        form.on('submit(privilege-save)', function (data) {
+
+            delete data.field.pid_select_input;
+
+            requestWithToken('/api/menu', 'put', false, data.field, response => {
+                layer.msg(response.message, {icon: 1, time: 1000}, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    window.parent.location.reload()
+                });
+            }, err => {
+                layer.msg(err.responseJSON.msg, {icon: 2, time: 1000});
+            })
+            return false;
+        });
+    })
 </script>
 <script>
 </script>

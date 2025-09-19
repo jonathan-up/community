@@ -80,6 +80,7 @@
 
 <script src="../../component/layui/layui.js"></script>
 <script src="../../component/pear/pear.js"></script>
+<script src="../../admin/utils.js"></script>
 
 <script>
     layui.use(['table', 'form', 'jquery', 'treetable', 'popup'], function () {
@@ -89,7 +90,7 @@
         let treetable = layui.treetable;
         let popup = layui.popup;
 
-        let MODULE_PATH = "/privilege/";
+        let MODULE_PATH = "./privilege/";
 
         treetable.render({
             treeColIndex: 0,
@@ -156,8 +157,7 @@
                 window.refresh();
             } else if (obj.event === 'expandAll') {
                 treetable.expandAll("#power-table")
-            }
-            else if (obj.event === 'foldAll') {
+            } else if (obj.event === 'foldAll') {
                 treetable.foldAll("#power-table")
             }
         });
@@ -192,8 +192,8 @@
                 type: 2,
                 title: '新增',
                 shade: 0.1,
-                area: ['450px', '500px'],
-                content: MODULE_PATH + 'add'
+                area: ['600px', '500px'],
+                content: MODULE_PATH + 'add.html'
             });
         }
 
@@ -202,29 +202,32 @@
                 type: 2,
                 title: '修改',
                 shade: 0.1,
-                area: ['450px', '500px'],
-                content: MODULE_PATH + 'edit?powerId=' + obj.data['powerId']
+                area: ['600px', '500px'],
+                content: MODULE_PATH + 'edit.html?id=' + obj.data['id']
             });
         }
 
         window.remove = function (obj) {
-            layer.confirm('确定要删除该权限', {icon: 3, title: '提示'}, function (index) {
+            layer.confirm('确定要删除该权限', {
+                icon: 3,
+                title: '提示'
+            }, function (index) {
                 layer.close(index);
                 let loading = layer.load();
-                $.ajax({
-                    url: MODULE_PATH + "remove/" + obj.data['powerId'],
-                    dataType: 'json',
-                    type: 'delete',
-                    success: function (result) {
-                        layer.close(loading);
-                        if (result.success) {
-                            popup.success(result.msg, function () {
-                                obj.del();
-                            })
-                        } else {
-                            popup.failure(result.msg);
-                        }
-                    }
+                requestWithToken('/api/menu', 'delete', true, {ids: [obj.data['id']]}, response => {
+                    layer.msg(response.message, {
+                        icon: 1,
+                        time: 1000
+                    }, function () {
+                        obj.del();
+                    });
+                }, err => {
+                    layer.msg(err.responseJSON.message, {
+                        icon: 2,
+                        time: 1000
+                    });
+                }, () => {
+                    layer.close(loading);
                 })
             });
         }

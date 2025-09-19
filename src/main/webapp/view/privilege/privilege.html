@@ -12,7 +12,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">权限名称</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" name="powerName" placeholder="" type="text">
+                    <input class="layui-input" name="title" placeholder="" type="text">
                 </div>
                 <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="power-query" lay-submit>
                     <i class="layui-icon layui-icon-search"></i>
@@ -61,7 +61,7 @@
 
 <script id="power-status" type="text/html">
     <input type="checkbox" name="enable" value="{{d.powerId}}" lay-skin="switch" lay-text="启用|禁用"
-           lay-filter="power-status" {{ d.status === 1 ? 'checked' : '' }}>
+           lay-filter="power-status" {{ d.status=== 1 ? 'checked' : '' }}>
 </script>
 
 <script id="icon" type="text/html">
@@ -127,7 +127,7 @@
         });
 
         form.on('submit(power-query)', function (data) {
-            treetable.search("#power-table", data.field.powerName)
+            treetable.search("#power-table", data.field.title)
             return false;
         });
 

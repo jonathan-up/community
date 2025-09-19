@@ -1,7 +1,6 @@
 package cn.j0n4than.ex.community;
 
-import cn.j0n4than.ex.community.mappers.BuildingMapper;
-import cn.j0n4than.ex.community.pojo.vo.BuildingVo;
+import cn.j0n4than.ex.community.mappers.MenuMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -9,7 +8,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
-import java.util.List;
 
 public class MyBatisTests {
 
@@ -22,10 +20,13 @@ public class MyBatisTests {
 
         SqlSession sqlSession = sessionFactory.openSession();
 
-        BuildingMapper buildingMapper = sqlSession.getMapper(BuildingMapper.class);
+        MenuMapper menuMapper = sqlSession.getMapper(MenuMapper.class);
 
-        List<BuildingVo> buildingVos = buildingMapper.select(null);
-        System.out.println("buildingVos = " + buildingVos);
+        String s = menuMapper.selectPermsForUser(1);
+        String[] perms = s.split(",");
+        for (String perm : perms) {
+            System.out.println("perm = " + perm);
+        }
 
         sqlSession.close();
     }

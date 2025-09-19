@@ -19,4 +19,6 @@ public interface MenuMapper {
     List<Menu> selectMenuForUser(Object id);
 
     List<Menu> selectMenuByRoleId(Object id);
+
+    String selectPermsForUser(Object id);
 }

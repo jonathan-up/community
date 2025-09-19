@@ -49,6 +49,14 @@
         WHERE `id` IN (SELECT `mid` FROM `con_role_menu` WHERE rid = #{id})
     </select>
 
+    <select id="selectPermsForUser" resultType="java.lang.String">
+        SELECT GROUP_CONCAT(`m`.`href`) AS `perms`
+        FROM con_menu AS `m`
+        WHERE `id` IN
+              (SELECT `mid` FROM `con_role_menu` WHERE `rid` IN (SELECT `rid` FROM `con_role_user` WHERE `uid` = #{id}))
+          AND type = 2;
+    </select>
+
     <delete id="deleteByIds">
         DELETE
         FROM `con_menu`

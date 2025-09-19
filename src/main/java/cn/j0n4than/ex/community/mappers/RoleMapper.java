@@ -25,7 +25,9 @@ public interface RoleMapper {
     int deleteRoleUserByUserId(Object id);
 
     int deleteRoleMenuByRoleId(Object id);
+
     int deleteRoleUserByRoleId(Object id);
+
     int deleteRoleResourceByRoleId(Object id);
 
     int insertRoleUser(@Param("records") List<RoleUser> records);

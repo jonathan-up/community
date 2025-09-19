@@ -26,6 +26,10 @@ import java.sql.SQLException;
 @WebServlet(name = "dispatcher", urlPatterns = "/api/*", loadOnStartup = 1)
 public class ServletDispatcher extends HttpServlet {
 
+    public ServletDispatcher() {
+        System.out.println("===ServletDispatcher::ServletDispatcher()");
+    }
+
     private void callHandler(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String path = req.getPathInfo();
@@ -51,10 +55,6 @@ public class ServletDispatcher extends HttpServlet {
             new HttpServletResponseEx(resp)
                     .json(500, new ResponseEntity<>("500 Server Internal Error", e.getMessage()));
         }
-    }
-
-    public ServletDispatcher() {
-        System.out.println("===ServletDispatcher::ServletDispatcher()");
     }
 
     @Override

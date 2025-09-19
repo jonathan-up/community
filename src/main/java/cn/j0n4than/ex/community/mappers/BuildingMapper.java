@@ -1,7 +1,6 @@
 package cn.j0n4than.ex.community.mappers;
 
 import cn.j0n4than.ex.community.pojo.entities.Building;
-import cn.j0n4than.ex.community.pojo.entities.Village;
 import cn.j0n4than.ex.community.pojo.vo.BuildingVo;
 import org.apache.ibatis.annotations.Param;
 

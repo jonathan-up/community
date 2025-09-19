@@ -9,11 +9,10 @@ import java.util.List;
 @Getter
 @Setter
 public class Page<T> {
+    List<T> records;
     private Integer current;
     private Integer size;
     private Integer total;
-
-    List<T> records;
 
     private Page() {
     }

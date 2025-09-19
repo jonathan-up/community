@@ -21,13 +21,8 @@
         WHERE `id` = #{id}
     </update>
 
-    <select id="select" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
+    <select id="selectAll" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
         SELECT * FROM `con_menu`
-        <where>
-            <if test="title != null and title != ''">
-                `title` LIKE '%${title}%'
-            </if>
-        </where>
     </select>
     <select id="selectById" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
         SELECT *

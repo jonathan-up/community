@@ -12,16 +12,10 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
 
     @Override
-    public Page<Menu> findPage(Menu condition, int current, int size) {
+    public List<Menu> findAll() {
 
         MenuMapper mapper = SqlSessionHolder.value.get().getMapper(MenuMapper.class);
-        try (com.github.pagehelper.Page<Menu> pageInfo = PageHelper.startPage(current, size).doSelectPage(() -> mapper.select(condition))) {
-            Page<Menu> thePage = new Page<>(current, size);
-            thePage.setTotal((int) pageInfo.getTotal());
-            thePage.setRecords(pageInfo.getResult());
-
-            return thePage;
-        }
+        return mapper.selectAll();
     }
 
     @Override

@@ -7,24 +7,47 @@ import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.ResponseEntity;
 import cn.j0n4than.ex.community.pojo.entities.Menu;
 import cn.j0n4than.ex.community.pojo.requests.DeleteRequest;
+import cn.j0n4than.ex.community.pojo.vo.MenuVo;
+import cn.j0n4than.ex.community.pojo.vo.MenusVo;
 import cn.j0n4than.ex.community.services.MenuService;
 import cn.j0n4than.ex.community.services.impl.MenuServiceImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // Menu
 public class MenuHandler {
 
     private final static MenuService menuService = new MenuServiceImpl();
 
+    private static void findChildren(MenusVo parent, List<Menu> records) {
+        for (Menu record : records) {
+            if (record.getPid().equals(parent.getId())) {
+                MenusVo child = new MenusVo(record);
+                parent.getChildren().add(child);
+
+                // you are father now
+                findChildren(child, records);
+            }
+        }
+    }
+
     // page list
     public static void page(HttpServletRequestEx request, HttpServletResponseEx response) {
-        Integer current = request.getParameterInt("page", 1);
-        Integer size = request.getParameterInt("size", 10);
-        Menu condition = request.bindParameter(Menu.class);
 
-        Page<Menu> page = menuService.findPage(condition, current, size);
-        response.json(200, new ResponseEntity<>("OK", page));
+        List<Menu> allRecords = menuService.findAll();
+
+//        ArrayList<MenusVo> top = new ArrayList<>();
+//
+//        for (Menu record : allRecords) {
+//            if (record.getPid() == 0) {
+//                MenusVo menusVo = new MenusVo(record);
+//                top.add(menusVo);
+//                findChildren(menusVo, allRecords);
+//            }
+//        }
+
+        response.json(200, new ResponseEntity<>("OK", allRecords));
     }
 
     // get one

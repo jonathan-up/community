@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MenuService {
 
-    Page<Menu> findPage(Menu condition, int current, int size);
+    List<Menu> findAll();
 
     int del(List<Object> ids);
 

@@ -11,4 +11,5 @@ public class Menu {
     private String href;
     private Integer pid;
     private String openType;
+    private Integer status;
 }

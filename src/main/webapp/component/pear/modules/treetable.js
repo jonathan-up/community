@@ -18,13 +18,19 @@ layui.define(['layer', 'table'], function (exports) {
             if (param.data) {
                 treetable.init(param, param.data);
             } else {
-                $.getJSON(param.url, param.where, function (res) {
-                    if(param.parseData){
-                        res.data = param.parseData(res);
-                        param.data = res.data;
+                let res = {};
+                $.ajax({
+                    url: param.url,
+                    type: param.method,
+                    headers: param.headers,
+                    success: response => {
+                        if (param.parseData) {
+                            res = param.parseData(response);
+                            param.data = res.data;
+                        }
+                        treetable.init(param, res.data);
                     }
-                    treetable.init(param, res.data);
-                });
+                })
             }
         },
         // 渲染表格
@@ -197,7 +203,7 @@ layui.define(['layer', 'table'], function (exports) {
             });
         }
     };
-	
+
     // 给图标列绑定事件
     $('body').on('click', '.treeTable .treeTable-icon', function () {
         var treeLinkage = $(this).parents('.treeTable').attr('treeLinkage');

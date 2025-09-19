@@ -64,14 +64,25 @@
             #{id}
         </foreach>
     </delete>
-    <delete id="deleteRolesByUserId">
+    <delete id="deleteRoleUserByUserId">
         DELETE
         FROM `con_role_user`
         WHERE uid = #{id}
     </delete>
-    <delete id="deleteMenusByRoleId">
+
+    <delete id="deleteRoleMenuByRoleId">
         DELETE
         FROM `con_role_menu`
+        WHERE rid = #{id}
+    </delete>
+    <delete id="deleteRoleUserByRoleId">
+        DELETE
+        FROM `con_role_user`
+        WHERE rid = #{id}
+    </delete>
+    <delete id="deleteRoleResourceByRoleId">
+        DELETE
+        FROM `con_role_resource`
         WHERE rid = #{id}
     </delete>
 

@@ -31,6 +31,11 @@ public class RoleServiceImpl implements RoleService {
     public int del(List<Object> ids) {
 
         RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
+        for (Object id : ids) {
+            mapper.deleteRoleUserByUserId(id);  // 删除用户角色关系
+            mapper.deleteRoleMenuByRoleId(id);  // 删除菜单角色关系
+            mapper.deleteRoleResourceByRoleId(id);  // 删除 资源角色关系
+        }
         return mapper.deleteByIds(ids);
     }
 
@@ -72,7 +77,7 @@ public class RoleServiceImpl implements RoleService {
         RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
 
         // delete first
-        mapper.deleteRolesByUserId(uid);
+        mapper.deleteRoleUserByUserId(uid);
 
         if (roleIds.isEmpty()) {
             return 0;
@@ -95,7 +100,7 @@ public class RoleServiceImpl implements RoleService {
         RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
 
         // delete first
-        mapper.deleteMenusByRoleId(rid);
+        mapper.deleteRoleMenuByRoleId(rid);
 
         if (menuIds.isEmpty()) {
             return 0;

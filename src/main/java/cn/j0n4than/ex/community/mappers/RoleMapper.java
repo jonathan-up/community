@@ -22,9 +22,11 @@ public interface RoleMapper {
 
     int switchStatus(Object id);
 
-    int deleteRolesByUserId(Object id);
+    int deleteRoleUserByUserId(Object id);
 
-    int deleteMenusByRoleId(Object id);
+    int deleteRoleMenuByRoleId(Object id);
+    int deleteRoleUserByRoleId(Object id);
+    int deleteRoleResourceByRoleId(Object id);
 
     int insertRoleUser(@Param("records") List<RoleUser> records);
 

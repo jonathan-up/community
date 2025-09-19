@@ -7,7 +7,8 @@
         INSERT INTO `con_menu` (`title`, `icon`, `type`, `href`, `pid`, `open_type`, `status`)
         VALUES
         <foreach collection="records" item="record" index="index" separator=",">
-            (#{record.title}, #{record.icon}, #{record.type}, #{record.href}, #{record.pid}, #{record.openType}, #{record.status})
+            (#{record.title}, #{record.icon}, #{record.type}, #{record.href}, #{record.pid}, #{record.openType},
+            #{record.status})
         </foreach>
     </insert>
     <update id="updateOne">
@@ -23,7 +24,8 @@
     </update>
 
     <select id="selectAll" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
-        SELECT * FROM `con_menu`
+        SELECT *
+        FROM `con_menu`
     </select>
     <select id="selectById" resultType="cn.j0n4than.ex.community.pojo.entities.Menu">
         SELECT *
@@ -51,6 +53,10 @@
         DELETE
         FROM `con_menu`
         WHERE `id` IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        AND `pid` IN
         <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>

@@ -50,3 +50,12 @@ function paginationParse(res) {
         "msg": res.message,
     }
 }
+
+function findChildren(parent, cb) {
+    cb(parent);
+    if (parent.children.length > 0) {
+        parent.children.forEach(child => {
+            findChildren(child, cb)
+        })
+    }
+}

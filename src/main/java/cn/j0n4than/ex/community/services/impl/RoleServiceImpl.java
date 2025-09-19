@@ -32,7 +32,7 @@ public class RoleServiceImpl implements RoleService {
 
         RoleMapper mapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
         for (Object id : ids) {
-            mapper.deleteRoleUserByUserId(id);  // 删除用户角色关系
+            mapper.deleteRoleUserByRoleId(id);  // 删除用户角色关系
             mapper.deleteRoleMenuByRoleId(id);  // 删除菜单角色关系
             mapper.deleteRoleResourceByRoleId(id);  // 删除 资源角色关系
         }

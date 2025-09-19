@@ -20,7 +20,8 @@
     <update id="updateOne">
         UPDATE `con_role`
         SET `name`        = #{name},
-            `description` = #{description}
+            `description` = #{description},
+            `status`      = #{status}
         WHERE id = #{id}
     </update>
     <update id="switchStatus">

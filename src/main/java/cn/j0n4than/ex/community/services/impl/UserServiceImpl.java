@@ -1,6 +1,7 @@
 package cn.j0n4than.ex.community.services.impl;
 
 import cn.j0n4than.ex.community.SqlSessionHolder;
+import cn.j0n4than.ex.community.mappers.RoleMapper;
 import cn.j0n4than.ex.community.mappers.UserMapper;
 import cn.j0n4than.ex.community.pojo.Page;
 import cn.j0n4than.ex.community.pojo.entities.User;
@@ -50,6 +51,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int del(List<Object> ids) {
         UserMapper mapper = SqlSessionHolder.value.get().getMapper(UserMapper.class);
+        RoleMapper roleMapper = SqlSessionHolder.value.get().getMapper(RoleMapper.class);
+
+        for (Object id : ids) {
+            roleMapper.deleteRoleUserByUserId(id);
+        }
         return mapper.deleteByIds(ids);
     }
 

@@ -1,10 +1,10 @@
 package cn.j0n4than.ex.community.filters;
 
+import cn.j0n4than.ex.community.Route;
 import cn.j0n4than.ex.community.Router;
 import cn.j0n4than.ex.community.magic.HttpFilterEx;
 import cn.j0n4than.ex.community.magic.HttpServletRequestEx;
 import cn.j0n4than.ex.community.magic.HttpServletResponseEx;
-import cn.j0n4than.ex.community.magic.ServletDispatcherCall;
 import cn.j0n4than.ex.community.pojo.ResponseEntity;
 
 import javax.servlet.FilterChain;
@@ -21,8 +21,8 @@ public class MethodNotAllowedFilter extends HttpFilterEx {
         String method = request.getMethod();
         String pathInfo = request.getPathInfo();
 
-        ServletDispatcherCall handler = Router.getHandler(pathInfo, method);
-        if (handler != null) {
+        Route route = Router.getRoute(pathInfo, method);
+        if (route != null) {
             chain.doFilter(request, response);
             return;
         }

@@ -2,6 +2,8 @@ package cn.j0n4than.ex.community;
 
 import cn.j0n4than.ex.community.handlers.*;
 
+import java.util.Collections;
+
 public class Startup {
 
     public static void initRouter() {
@@ -12,11 +14,11 @@ public class Startup {
 
         // 小区
         Router.register("/village/one", HttpMethod.GET, VillageHandler::one);
-        Router.register("/village", HttpMethod.GET, VillageHandler::page);
-        Router.register("/village", HttpMethod.PUT, VillageHandler::save);
-        Router.register("/village", HttpMethod.DELETE, VillageHandler::del);
-        Router.register("/village/import", HttpMethod.POST, VillageHandler::_import);
-        Router.register("/village/upload", HttpMethod.POST, VillageHandler::upload);
+        Router.register("/village", HttpMethod.GET, VillageHandler::page, Collections.singletonList("/village/query"));
+        Router.register("/village", HttpMethod.PUT, VillageHandler::save, Collections.singletonList("/village/save"));
+        Router.register("/village", HttpMethod.DELETE, VillageHandler::del, Collections.singletonList("/village/delete"));
+        Router.register("/village/import", HttpMethod.POST, VillageHandler::_import, Collections.singletonList("/village/import"));
+        Router.register("/village/upload", HttpMethod.POST, VillageHandler::upload, Collections.singletonList("/village/upload"));
 
         // 楼栋
         Router.register("/building", HttpMethod.GET, BuildingHandler::page);

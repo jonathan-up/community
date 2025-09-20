@@ -19,4 +19,6 @@ public interface MenuService {
     List<Menu> findForUser(Object id);
 
     List<Menu> findForRole(Object id);
+
+    List<String> findPermissions(Object id);
 }

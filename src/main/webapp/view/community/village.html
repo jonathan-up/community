@@ -49,20 +49,21 @@
 </div>
 
 <script type="text/html" id="role-toolbar">
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+    <button id="add_btn" class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+    <button id="batch_del_btn" class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
     </button>
 </script>
 
 <script type="text/html" id="role-bar">
-    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    <button class="pear-btn pear-btn-primary pear-btn-sm edit_btn" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    <button class="pear-btn pear-btn-danger pear-btn-sm del_btn" lay-event="remove"><i
+            class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
 
@@ -83,6 +84,9 @@
         let form = layui.form;
         let $ = layui.jquery;
         let upload = layui.upload;
+
+        // My permissions
+        const perms = getPermissions();
 
         let MODULE_PATH = "./village/";
 
@@ -171,8 +175,17 @@
                 return {
                     "msg": res.message,
                 }
+            },
+            done: () => {
+                // 异步操作: 这个时候编辑和删除按钮才渲染完成
+                (!perms.includes(`/village/save`)) && $('.edit_btn').remove();
+                (!perms.includes(`/village/delete`)) && $('.del_btn').remove();
             }
         });
+
+        // 一定要在Table选然后执行
+        (!perms.includes(`/village/save`)) && $('#add_btn').remove();
+        (!perms.includes(`/village/delete`)) && $('#batch_del_btn').remove();
 
         table.on('tool(village_table)', function (obj) {
             if (obj.event === 'remove') {

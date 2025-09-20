@@ -42,7 +42,7 @@
         const roleId = getQueryVariable("roleId");
 
         let theTree = [];
-        let userMenuIds = [];
+        let roleMenuIds = [];
 
         // all menu nodes
         requestWithToken("/api/menu/tree", 'get', false, null, response => {
@@ -54,21 +54,28 @@
         // menu nodes that role have
         requestWithToken(`/api/menu/role?id=${roleId}`, 'get', false, null, response => {
             response.result.forEach(record => {
-                userMenuIds.push(record.id)
+                roleMenuIds.push(record.id)
             })
         }, result => {
             layer.msg(result.responseJSON.message, {icon: 2, time: 1000});
         });
 
         // checked nodes
+        const pids = new Set();
         theTree.forEach(parent => {
             findChildren(parent, child => {
-                if (userMenuIds.includes(child.id)) {
+                pids.add(child.pid)
+            })
+        })
+        theTree.forEach(parent => {
+            findChildren(parent, child => {
+                if (!pids.has(child.id) && roleMenuIds.includes(child.id)) {
                     child.checked = true
                 }
                 child.spread = true
             })
         })
+
 
         const treeIns = tree.render({
             elem: '#tree',

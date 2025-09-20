@@ -59,3 +59,11 @@ function findChildren(parent, cb) {
         })
     }
 }
+
+function getPermissions() {
+    const permsStr = localStorage.getItem("perms");
+    if (!permsStr) {
+        return [];
+    }
+    return permsStr.split(',');
+}

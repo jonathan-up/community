@@ -1,10 +1,11 @@
 package cn.j0n4than.ex.community;
 
 import cn.j0n4than.ex.community.exceptions.HandlerException;
+import cn.j0n4than.ex.community.handlers.MenuHandler;
 import cn.j0n4than.ex.community.magic.HttpServletRequestEx;
 import cn.j0n4than.ex.community.magic.HttpServletResponseEx;
-import cn.j0n4than.ex.community.magic.ServletDispatcherCall;
 import cn.j0n4than.ex.community.pojo.ResponseEntity;
+import cn.j0n4than.ex.community.pojo.entities.User;
 import cn.j0n4than.ex.community.utils.MybatisUtils;
 import org.apache.ibatis.session.SqlSession;
 
@@ -17,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
@@ -30,30 +34,50 @@ public class ServletDispatcher extends HttpServlet {
         System.out.println("===ServletDispatcher::ServletDispatcher()");
     }
 
-    private void callHandler(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void callHandler(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String path = req.getPathInfo();
             String method = req.getMethod();
 
             // Get handler from routes
-            ServletDispatcherCall handler = Router.getHandler(path, method);
+            Route route = Router.getRoute(path, method);
 
             // Handler not found
-            if (handler == null) {
+            if (route == null) {
                 throw new HandlerException(404, "404 Not Found", null);
             }
 
-            // TODO: middleware? filter?
+            // Permissions
+            List<String> routePerms = route.getPerms();
+            if (routePerms.isEmpty()) {
+                // Call handler
+                route.getHandler().call(new HttpServletRequestEx(req), new HttpServletResponseEx(resp));
+                return;
+            }
 
-            // Call handler
-            handler.call(new HttpServletRequestEx(req), new HttpServletResponseEx(resp));
+            List<String> userPerms = Collections.emptyList();
+            User user = AuthUserHolder.value.get();
+            if (user != null) {
+                userPerms = MenuHandler.menuService.findPermissions(user.getId());
+            }
+
+            if (new HashSet<>(userPerms).containsAll(routePerms)) {
+                route.getHandler().call(new HttpServletRequestEx(req), new HttpServletResponseEx(resp));
+                return;
+            }
+
+            throw new HandlerException(403, "403 Forbidden", null);
         } catch (HandlerException e) {
             new HttpServletResponseEx(resp)
                     .json(e.getHttpStatus(), new ResponseEntity<>(e.getMessage(), e.getResult()));
+            throw e;
         } catch (Exception e) {
-            // TODO rollback?
+            e.printStackTrace();
             new HttpServletResponseEx(resp)
                     .json(500, new ResponseEntity<>("500 Server Internal Error", e.getMessage()));
+
+            // for sql filter rollback
+            throw new RuntimeException(e);
         }
     }
 

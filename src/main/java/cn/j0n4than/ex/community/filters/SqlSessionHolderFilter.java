@@ -19,12 +19,19 @@ public class SqlSessionHolderFilter extends HttpFilterEx {
         // open session
         SqlSessionHolder.value.set(MybatisUtils.sqlSessionFactory.openSession());
 
-        chain.doFilter(request, response);
+        try {
+            chain.doFilter(request, response);
 
-        // commit & close then remove it
-        SqlSessionHolder.value.get().commit();
-        SqlSessionHolder.value.get().close();
-        SqlSessionHolder.value.remove();
+            // Commit
+            SqlSessionHolder.value.get().commit();
+        } catch (Exception e) {
+            // Rollback
+            SqlSessionHolder.value.get().rollback();
+        } finally {
+            // Finally close & remove it
+            SqlSessionHolder.value.get().close();
+            SqlSessionHolder.value.remove();
+        }
     }
 
     @Override

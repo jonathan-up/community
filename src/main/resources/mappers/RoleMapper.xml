@@ -73,17 +73,22 @@
     <delete id="deleteRoleMenuByRoleId">
         DELETE
         FROM `con_role_menu`
-        WHERE rid = #{id}
+        WHERE `rid` = #{id}
     </delete>
     <delete id="deleteRoleUserByRoleId">
         DELETE
         FROM `con_role_user`
-        WHERE rid = #{id}
+        WHERE `rid` = #{id}
     </delete>
     <delete id="deleteRoleResourceByRoleId">
         DELETE
         FROM `con_role_resource`
-        WHERE rid = #{id}
+        WHERE `rid` = #{id}
+    </delete>
+    <delete id="deleteRoleMenuByMenuId">
+        DELETE
+        FROM `con_role_menu`
+        WHERE `mid` = #{id}
     </delete>
 
 </mapper>

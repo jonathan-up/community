@@ -7,6 +7,8 @@ import java.util.Collections;
 public class Startup {
 
     public static void initRouter() {
+        // -> /api/*
+
         Router.register("/auth/login", HttpMethod.POST, AuthHandler::login);
         Router.register("/profile", HttpMethod.GET, ProfileHandler::get);
 

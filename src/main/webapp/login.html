@@ -35,35 +35,8 @@
 <script>
     layui.use(['form', 'element', 'jquery', 'button', 'popup', 'layer'], function () {
         const form = layui.form;
-        // const element = layui.element;
-        // const button = layui.button;
-        // const popup = layui.popup;
         const layer = layui.layer;
         const $ = layui.jquery;
-
-        // $("#pbutton").click(function () {
-        //
-        //     let username = $("#username").val();
-        //
-        //     console.info(username)
-        //
-        //     $.ajax({
-        //         url: 'http://localhost:8080/community/admin/sendSms',
-        //         type: "get",
-        //         data: {
-        //             username: username
-        //         },
-        //         success: function (result) {
-        //             if (result.code === 0) {
-        //
-        //                 layer.msg("发送成功!", {icon: 1, time: 1000});
-        //             } else {
-        //                 layer.msg(result.msg, {icon: 2, time: 1000});
-        //             }
-        //         }
-        //     })
-        //
-        // });
 
         // 登 录 提 交
         form.on('submit(login)', function (data) {
@@ -77,7 +50,8 @@
                     //存储登录信息到到localStorage
                     const waiting4 = 500;
                     layer.msg(response.message, {icon: 6, time: waiting4});
-                    localStorage.setItem("token", response.result);
+                    localStorage.setItem("token", response.result.token);
+                    localStorage.setItem("perms", response.result.permissions)
                     setTimeout(() => {
                         location.href = "index.html"
                     }, waiting4);
@@ -90,15 +64,6 @@
                 }
             });
 
-            // button.load({
-            // 	elem: '.login',
-            // 	time: 1500,
-            // 	done: function() {
-            // 		popup.success("登录成功", function() {
-            // 			location.href = "index.html"
-            // 		});
-            // 	}
-            // })
             return false;
         });
     })

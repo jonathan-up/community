@@ -16,7 +16,7 @@ import java.util.List;
 // Menu
 public class MenuHandler {
 
-    private final static MenuService menuService = new MenuServiceImpl();
+    public final static MenuService menuService = new MenuServiceImpl();
 
     private static void findChildren(MenusVo parent, List<Menu> records) {
         for (Menu record : records) {
